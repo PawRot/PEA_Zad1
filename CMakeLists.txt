@@ -7,4 +7,8 @@ endif(WIN32)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(PEA_Zad1 main.cpp)
+add_executable(PEA_Zad1 menu/main.cpp
+        data/dataGenerator.h
+        data/dataGenerator.cpp
+        data/fileOperator.h
+        data/fileOperator.cpp)

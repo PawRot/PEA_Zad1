@@ -49,11 +49,23 @@ cmake_ninja_workdir = /Users/michal/Developer/Repozytoria/PEA_Zad1/cmake-build-r
 
 build cmake_object_order_depends_target_PEA_Zad1: phony || CMakeFiles/PEA_Zad1.dir
 
-build CMakeFiles/PEA_Zad1.dir/main.cpp.o: CXX_COMPILER__PEA_Zad1_unscanned_Release /Users/michal/Developer/Repozytoria/PEA_Zad1/main.cpp || cmake_object_order_depends_target_PEA_Zad1
-  DEP_FILE = CMakeFiles/PEA_Zad1.dir/main.cpp.o.d
+build CMakeFiles/PEA_Zad1.dir/menu/main.cpp.o: CXX_COMPILER__PEA_Zad1_unscanned_Release /Users/michal/Developer/Repozytoria/PEA_Zad1/menu/main.cpp || cmake_object_order_depends_target_PEA_Zad1
+  DEP_FILE = CMakeFiles/PEA_Zad1.dir/menu/main.cpp.o.d
   FLAGS = -O3 -DNDEBUG -std=gnu++20 -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.0.sdk -fcolor-diagnostics
   OBJECT_DIR = CMakeFiles/PEA_Zad1.dir
-  OBJECT_FILE_DIR = CMakeFiles/PEA_Zad1.dir
+  OBJECT_FILE_DIR = CMakeFiles/PEA_Zad1.dir/menu
+
+build CMakeFiles/PEA_Zad1.dir/data/dataGenerator.cpp.o: CXX_COMPILER__PEA_Zad1_unscanned_Release /Users/michal/Developer/Repozytoria/PEA_Zad1/data/dataGenerator.cpp || cmake_object_order_depends_target_PEA_Zad1
+  DEP_FILE = CMakeFiles/PEA_Zad1.dir/data/dataGenerator.cpp.o.d
+  FLAGS = -O3 -DNDEBUG -std=gnu++20 -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.0.sdk -fcolor-diagnostics
+  OBJECT_DIR = CMakeFiles/PEA_Zad1.dir
+  OBJECT_FILE_DIR = CMakeFiles/PEA_Zad1.dir/data
+
+build CMakeFiles/PEA_Zad1.dir/data/fileOperator.cpp.o: CXX_COMPILER__PEA_Zad1_unscanned_Release /Users/michal/Developer/Repozytoria/PEA_Zad1/data/fileOperator.cpp || cmake_object_order_depends_target_PEA_Zad1
+  DEP_FILE = CMakeFiles/PEA_Zad1.dir/data/fileOperator.cpp.o.d
+  FLAGS = -O3 -DNDEBUG -std=gnu++20 -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.0.sdk -fcolor-diagnostics
+  OBJECT_DIR = CMakeFiles/PEA_Zad1.dir
+  OBJECT_FILE_DIR = CMakeFiles/PEA_Zad1.dir/data
 
 
 # =============================================================================
@@ -63,7 +75,7 @@ build CMakeFiles/PEA_Zad1.dir/main.cpp.o: CXX_COMPILER__PEA_Zad1_unscanned_Relea
 #############################################
 # Link the executable PEA_Zad1
 
-build PEA_Zad1: CXX_EXECUTABLE_LINKER__PEA_Zad1_Release CMakeFiles/PEA_Zad1.dir/main.cpp.o
+build PEA_Zad1: CXX_EXECUTABLE_LINKER__PEA_Zad1_Release CMakeFiles/PEA_Zad1.dir/menu/main.cpp.o CMakeFiles/PEA_Zad1.dir/data/dataGenerator.cpp.o CMakeFiles/PEA_Zad1.dir/data/fileOperator.cpp.o
   FLAGS = -O3 -DNDEBUG -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.0.sdk
   OBJECT_DIR = CMakeFiles/PEA_Zad1.dir
   POST_BUILD = :
