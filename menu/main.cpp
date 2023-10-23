@@ -1,21 +1,23 @@
 #include <iostream>
+#include "../data/fileOperator.h"
+#include "../data/dataGenerator.h"
 
 void showMenuOptions();
 
-void loadFromFile();
+vector<vector<int>> loadFromFile(bool &dataLoaded);
 
-void generateData();
+vector<vector<int>> generateData(bool &dataLoaded);
 
 void displayCurrentData();
 
 void startBruteForce();
 
 
-
 int main() {
     // punkt wejścia do programu
     int choice = 0;
     bool dataLoaded = false;
+    vector<vector<int>> testData;
 
     do {
         std::cin.clear();
@@ -25,10 +27,10 @@ int main() {
 
         switch (choice) {
             case 1:
-                loadFromFile();
+                testData = loadFromFile(dataLoaded);
                 break;
             case 2:
-                generateData();
+                testData = generateData(dataLoaded);
                 break;
             case 3:
 //                displayCurrentData();
@@ -39,7 +41,7 @@ int main() {
             default:
                 break;
         }
-    }while (choice != 0);
+    } while (choice != 0);
 }
 
 void showMenuOptions() {
@@ -50,15 +52,26 @@ void showMenuOptions() {
     std::cout << "0. Exit" << std::endl;
 }
 
-void loadFromFile(){
-    std::cout << "Enter file name: ";
-    std::string fileName;
-    std::cin >> fileName;
+vector<vector<int>> loadFromFile(bool &dataLoaded) {
+    std::cout << "Enter file path: ";
+    std::string filePath;
+    std::cin >> filePath;
 
-    std::cout << "Loading data from file: " << fileName << std::endl;
+    std::cout << "Loading data from file: " << filePath << std::endl;
+    fileOperator fileOperator;
+    auto data = fileOperator.loadDataFromFile(filePath);
+    if (!data.empty()) {
+        std::cout << "Data loaded successfully" << std::endl;
+        dataLoaded = true;
+        return data;
+    } else {
+        std::cout << "Data not loaded" << std::endl;
+        return {};
+    }
+
 }
 
-void generateData(){
+vector<vector<int>> generateData(bool &dataLoaded) {
     std::cout << "Enter number of cities: ";
     int numberOfCities;
     std::cin >> numberOfCities;
@@ -68,4 +81,7 @@ void generateData(){
     std::cin >> maximumDistance;
 
     std::cout << "Generating test data" << std::endl;
+
+
+    return {};
 }
