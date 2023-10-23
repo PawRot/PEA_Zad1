@@ -8,7 +8,7 @@ vector<vector<int>> loadFromFile(bool &dataLoaded);
 
 vector<vector<int>> generateData(bool &dataLoaded);
 
-void displayCurrentData();
+void displayCurrentData(vector<vector<int>> &data);
 
 void startBruteForce();
 
@@ -27,13 +27,23 @@ int main() {
 
         switch (choice) {
             case 1:
+                std::cout << std::endl;
                 testData = loadFromFile(dataLoaded);
+                std::cout << std::endl;
                 break;
             case 2:
+                std::cout << std::endl;
                 testData = generateData(dataLoaded);
+                std::cout << std::endl;
                 break;
             case 3:
-//                displayCurrentData();
+                std::cout << std::endl;
+                if(dataLoaded){
+                    displayCurrentData(testData);
+                } else {
+                    std::cout << "No data loaded" << std::endl;
+                }
+                std::cout << std::endl;
                 break;
             case 4:
 //                startBruteForce();
@@ -71,7 +81,7 @@ vector<vector<int>> loadFromFile(bool &dataLoaded) {
 
 }
 
-vector<vector<int>> generateData(bool &dataLoaded) {
+vector<vector<int>> generateData(bool &dataLoaded) { //TODO: implement
     std::cout << "Enter number of cities: ";
     int numberOfCities;
     std::cin >> numberOfCities;
@@ -84,4 +94,16 @@ vector<vector<int>> generateData(bool &dataLoaded) {
 
 
     return {};
+}
+
+void displayCurrentData(vector<vector<int>> &data) {
+    int numberOfCities = static_cast<int>(data.size());
+    std::cout << "Current number of cities: " << numberOfCities << std::endl;
+    std::cout << "Current test data matrix: " << std::endl;
+    for (int i = 0; i < numberOfCities; ++i) {
+        for (int j = 0; j < numberOfCities; ++j) {
+            std::cout << data[i][j] << " ";
+        }
+        std::cout << std::endl;
+    }
 }
