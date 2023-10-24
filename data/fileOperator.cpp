@@ -11,7 +11,6 @@ fileOperator::fileOperator() = default;
 fileOperator::~fileOperator() = default;
 
 void fileOperator::saveFile(const string &path, const vector<long long int> &data) {
-
 }
 
 vector<vector<int>> fileOperator::loadDataFromFile(const string &path) {

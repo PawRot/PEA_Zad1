@@ -19,7 +19,7 @@ public:
     fileOperator();
 
     ~fileOperator();
-
+    [[deprecated("Function not yet implemented")]]
     void saveFile(const string &path, const vector<long long int> &data);
 
     vector<vector<int>> loadDataFromFile(const string &path);

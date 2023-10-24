@@ -15,15 +15,23 @@ void startBruteForce();
 
 int main() {
     // punkt wejścia do programu
-    int choice = 0;
+    int choice = -1;
+    std::string input;
     bool dataLoaded = false;
     vector<vector<int>> testData;
 
     do {
-        std::cin.clear();
 
         showMenuOptions();
-        std::cin >> choice;
+        std::cin >> input;
+
+        try {
+            choice = std::stoi(input);
+        } catch (std::invalid_argument &e) {
+            std::cout << "Invalid argument" << std::endl << std::endl;
+            choice = -1;
+        }
+
 
         switch (choice) {
             case 1:
@@ -38,7 +46,7 @@ int main() {
                 break;
             case 3:
                 std::cout << std::endl;
-                if(dataLoaded){
+                if (dataLoaded) {
                     displayCurrentData(testData);
                 } else {
                     std::cout << "No data loaded" << std::endl;
@@ -81,19 +89,39 @@ vector<vector<int>> loadFromFile(bool &dataLoaded) {
 
 }
 
-vector<vector<int>> generateData(bool &dataLoaded) { //TODO: implement
+vector<vector<int>> generateData(bool &dataLoaded) {
     std::cout << "Enter number of cities: ";
+    std::string input;
+    std::cin >> input;
     int numberOfCities;
-    std::cin >> numberOfCities;
+    try {
+        numberOfCities = std::stoi(input);
+    } catch (std::invalid_argument &e) {
+        std::cout << "Invalid argument" << std::endl;
+        return {};
+    }
 
     std::cout << "Enter maximum distance between cities: ";
     int maximumDistance;
-    std::cin >> maximumDistance;
+    std::cin >> input;
 
+    try {
+        maximumDistance = std::stoi(input);
+    } catch (std::invalid_argument &e) {
+        std::cout << "Invalid argument" << std::endl;
+        return {};
+    }
     std::cout << "Generating test data" << std::endl;
+    auto data = dataGenerator::generateTestData(numberOfCities, maximumDistance);
+    if (!data.empty()) {
+        std::cout << "Data generated successfully" << std::endl;
+        dataLoaded = true;
+        return data;
+    } else {
+        std::cout << "Data not generated" << std::endl;
+        return {};
+    }
 
-
-    return {};
 }
 
 void displayCurrentData(vector<vector<int>> &data) {
