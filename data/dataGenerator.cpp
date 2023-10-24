@@ -4,9 +4,6 @@
 
 #include "dataGenerator.h"
 
-dataGenerator::dataGenerator() = default;
-
-dataGenerator::~dataGenerator() = default;
 
 vector<vector<int>> dataGenerator::generateTestData(int numberOfCities, int maxDistance) {
     vector<vector<int>> tab(numberOfCities, vector<int>(numberOfCities));

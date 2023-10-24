@@ -13,10 +13,6 @@ using std::vector;
 
 class dataGenerator {
 public:
-    dataGenerator();
-
-    ~dataGenerator();
-
     static vector<vector<int>> generateTestData(int numberOfCities, int maxDistance);
 
 };

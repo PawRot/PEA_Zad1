@@ -1,6 +1,7 @@
 #include <iostream>
 #include "../data/fileOperator.h"
 #include "../data/dataGenerator.h"
+#include "../algorithms/bruteForce.h"
 
 void showMenuOptions();
 
@@ -10,7 +11,7 @@ vector<vector<int>> generateData(bool &dataLoaded);
 
 void displayCurrentData(vector<vector<int>> &data);
 
-void startBruteForce();
+void startBruteForce(vector<vector<int>> &testData);
 
 
 int main() {
@@ -54,8 +55,15 @@ int main() {
                 std::cout << std::endl;
                 break;
             case 4:
-//                startBruteForce();
-                break;
+            {
+                std::cout << std::endl;
+                if (dataLoaded) {
+                    startBruteForce(testData);
+                } else {
+                    std::cout << "No data loaded" << std::endl;
+                }
+                std::cout << std::endl;
+                break;}
             default:
                 break;
         }
@@ -134,4 +142,12 @@ void displayCurrentData(vector<vector<int>> &data) {
         }
         std::cout << std::endl;
     }
+
+}
+
+void startBruteForce(vector<vector<int>> &testData) {
+    std::cout << "Starting Brute Force algorithm" << std::endl;
+    bruteForce bruteForce(testData);
+    bruteForce.bruteForceAlgorithm();
+
 }
