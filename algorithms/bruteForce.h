@@ -25,6 +25,7 @@ private:
     int numberOfCities;
     int bestPath;
     vector<int> citiesIndexes;
+    vector<int> bestPathIndexes;
 
 };
 

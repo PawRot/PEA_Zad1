@@ -9,11 +9,11 @@ bruteForce::bruteForce(const vector<vector<int>>& graph) {
     this->numberOfCities = static_cast<int>(graph.size());
     bestPath = INT_MAX;
     citiesIndexes = vector<int>(numberOfCities);
+    bestPathIndexes = vector<int>(numberOfCities);
     std::iota(citiesIndexes.begin(), citiesIndexes.end(), 0);
 }
 
 void bruteForce::bruteForceAlgorithm() { // TODO ogarnąć jak działą ten algorytm XD (zastanowić się dlaczego zawsze najkrótsza ścieżka jest z miasta 0)
-    vector<int> bestPathIndexes(numberOfCities+1);
     do {
         int currentPath = 0;
         for (int i = 0; i < numberOfCities - 1; i++) {
@@ -25,20 +25,21 @@ void bruteForce::bruteForceAlgorithm() { // TODO ogarnąć jak działą ten algo
         if (currentPath < bestPath) {
             bestPath = currentPath;
             bestPathIndexes = citiesIndexes;
-            std::cout << "Best path: " << bestPath << std::endl;
-            for (int i = 0; i < numberOfCities; i++) {
-                std::cout << bestPathIndexes[i] << " ";
-            }
-            std::cout << bestPathIndexes[0] << std::endl;
+            bestPathIndexes.push_back(0);
+//            std::cout << "Best path: " << bestPath << std::endl;
+//            for (int i = 0; i < numberOfCities; i++) {
+//                std::cout << bestPathIndexes[i] << " ";
+//            }
+//            std::cout << bestPathIndexes[0] << std::endl;
         }
     } while (std::next_permutation(citiesIndexes.begin(), citiesIndexes.end()));
 
     std::cout << "Best path: " << bestPath << std::endl;
     std::cout << "Path: ";
-    for (int i = 0; i < numberOfCities; i++) {
+    for (int i = 0; i < numberOfCities+1; i++) {
         std::cout << bestPathIndexes[i] << " ";
     }
-    std::cout << bestPathIndexes[0] << std::endl;
+//    std::cout << bestPathIndexes[0] << std::endl;
 
 }
 
