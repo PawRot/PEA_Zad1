@@ -13,7 +13,7 @@ using std::vector;
 
 class dataGenerator {
 public:
-    static vector<vector<int>> generateTestData(int numberOfCities, int maxDistance);
+    static vector<vector<int>> generateTestData(unsigned int numberOfCities, unsigned int maxDistance, unsigned int minimumDistance);
 
 };
 

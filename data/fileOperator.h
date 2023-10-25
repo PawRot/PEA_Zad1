@@ -14,15 +14,14 @@ using std::string, std::vector;
 
 class fileOperator {
 public:
-    std::fstream file;
-
     fileOperator();
 
     ~fileOperator();
+    static void saveDataFile(const string &path, const vector<vector<int>> &data);
     [[deprecated("Function not yet implemented")]]
-    void saveFile(const string &path, const vector<long long int> &data);
+    static void saveResultFile(const string &path);
 
-    vector<vector<int>> loadDataFromFile(const string &path);
+    static vector<vector<int>> loadDataFromFile(const string &path);
 };
 
 

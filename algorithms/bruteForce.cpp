@@ -19,7 +19,7 @@ void bruteForce::bruteForceAlgorithm() { // TODO ogarnąć jak działą ten algo
         for (int i = 0; i < numberOfCities - 1; i++) {
             currentPath += graph[citiesIndexes[i]][citiesIndexes[i + 1]];
         }
-//        currentPath += graph[citiesIndexes[numberOfCities - 1]][citiesIndexes[0]];
+        currentPath += graph[citiesIndexes[numberOfCities - 1]][citiesIndexes[0]];
 //        std::cout << citiesIndexes[0] << std::endl;
 
         if (currentPath < bestPath) {

@@ -55,7 +55,6 @@ int main() {
                 std::cout << std::endl;
                 break;
             case 4:
-            {
                 std::cout << std::endl;
                 if (dataLoaded) {
                     startBruteForce(testData);
@@ -63,7 +62,18 @@ int main() {
                     std::cout << "No data loaded" << std::endl;
                 }
                 std::cout << std::endl;
-                break;}
+                break;
+            case 9:
+                std::cout << std::endl;
+                if(dataLoaded) {
+                    std::cout << "Provide file name or whole path" << std::endl;
+                    string path;
+                    std::cin >> path;
+                    fileOperator::saveDataFile(path, testData);
+                    std::cout << std::endl;
+                } else {
+                    std::cout << "No data loaded" << std::endl;
+                }
             default:
                 break;
         }
@@ -75,6 +85,7 @@ void showMenuOptions() {
     std::cout << "2. Generate test data" << std::endl;
     std::cout << "3. Display current test data" << std::endl;
     std::cout << "4. Start Brute Force algorithm" << std::endl;
+    std::cout << "9. Save current data to file" << std::endl;
     std::cout << "0. Exit" << std::endl;
 }
 
@@ -84,8 +95,7 @@ vector<vector<int>> loadFromFile(bool &dataLoaded) {
     std::cin >> filePath;
 
     std::cout << "Loading data from file: " << filePath << std::endl;
-    fileOperator fileOperator;
-    auto data = fileOperator.loadDataFromFile(filePath);
+    auto data = fileOperator::loadDataFromFile(filePath);
     if (!data.empty()) {
         std::cout << "Data loaded successfully" << std::endl;
         dataLoaded = true;
@@ -101,7 +111,7 @@ vector<vector<int>> generateData(bool &dataLoaded) {
     std::cout << "Enter number of cities: ";
     std::string input;
     std::cin >> input;
-    int numberOfCities;
+    unsigned int numberOfCities;
     try {
         numberOfCities = std::stoi(input);
     } catch (std::invalid_argument &e) {
@@ -109,8 +119,19 @@ vector<vector<int>> generateData(bool &dataLoaded) {
         return {};
     }
 
+    std::cout << "Enter minimum distance between cities: ";
+    unsigned int minimumDistance;
+    std::cin >> input;
+
+    try {
+        minimumDistance = std::stoi(input);
+    } catch (std::invalid_argument &e) {
+        std::cout << "Invalid argument" << std::endl;
+        return {};
+    }
+
     std::cout << "Enter maximum distance between cities: ";
-    int maximumDistance;
+    unsigned int maximumDistance;
     std::cin >> input;
 
     try {
@@ -120,7 +141,7 @@ vector<vector<int>> generateData(bool &dataLoaded) {
         return {};
     }
     std::cout << "Generating test data" << std::endl;
-    auto data = dataGenerator::generateTestData(numberOfCities, maximumDistance);
+    auto data = dataGenerator::generateTestData(numberOfCities, maximumDistance, minimumDistance);
     if (!data.empty()) {
         std::cout << "Data generated successfully" << std::endl;
         dataLoaded = true;
