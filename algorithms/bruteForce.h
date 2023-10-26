@@ -2,6 +2,7 @@
 #define PEA_ZAD1_BRUTEFORCE_H
 
 #include <iostream>
+#include <algorithm>
 #include <vector>
 #include <numeric>
 

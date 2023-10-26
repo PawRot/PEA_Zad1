@@ -179,9 +179,9 @@ void startBruteForce(vector<vector<int>> &testData) {
     bruteForce bruteForce(testData);
     auto start = std::chrono::steady_clock::now();
 
-//    auto resultTuple = bruteForce.bruteForceAlgorithm(); //synchroniczne wykonanie
+    auto resultTuple = bruteForce.bruteForceAlgorithm(); //synchroniczne wykonanie
 
-    auto promise = std::async(&bruteForce::bruteForceAlgorithm, &bruteForce);
+//    auto promise = std::async(&bruteForce::bruteForceAlgorithm, &bruteForce);
 
 //    std::cout << "Example of asynchronous execution" << std::endl;
 //    ten kod sprawdza, czy algorytm się skończył, jeśli nie to co sekundę wypisuje komunikat
@@ -193,7 +193,7 @@ void startBruteForce(vector<vector<int>> &testData) {
 //        }
 //    } while (status != std::future_status::ready);
 
-    auto resultTuple = promise.get();
+//    auto resultTuple = promise.get();
 
     auto end = std::chrono::steady_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
