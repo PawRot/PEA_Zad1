@@ -73,6 +73,12 @@ build CMakeFiles/PEA_Zad1.dir/algorithms/bruteForce.cpp.o: CXX_COMPILER__PEA_Zad
   OBJECT_DIR = CMakeFiles/PEA_Zad1.dir
   OBJECT_FILE_DIR = CMakeFiles/PEA_Zad1.dir/algorithms
 
+build CMakeFiles/PEA_Zad1.dir/data/timer.cpp.o: CXX_COMPILER__PEA_Zad1_unscanned_Release /Users/michal/Developer/Repozytoria/PEA_Zad1/data/timer.cpp || cmake_object_order_depends_target_PEA_Zad1
+  DEP_FILE = CMakeFiles/PEA_Zad1.dir/data/timer.cpp.o.d
+  FLAGS = -O3 -DNDEBUG -std=gnu++20 -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.0.sdk -fcolor-diagnostics
+  OBJECT_DIR = CMakeFiles/PEA_Zad1.dir
+  OBJECT_FILE_DIR = CMakeFiles/PEA_Zad1.dir/data
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target PEA_Zad1
@@ -81,7 +87,7 @@ build CMakeFiles/PEA_Zad1.dir/algorithms/bruteForce.cpp.o: CXX_COMPILER__PEA_Zad
 #############################################
 # Link the executable PEA_Zad1
 
-build PEA_Zad1: CXX_EXECUTABLE_LINKER__PEA_Zad1_Release CMakeFiles/PEA_Zad1.dir/menu/main.cpp.o CMakeFiles/PEA_Zad1.dir/data/dataGenerator.cpp.o CMakeFiles/PEA_Zad1.dir/data/fileOperator.cpp.o CMakeFiles/PEA_Zad1.dir/algorithms/bruteForce.cpp.o
+build PEA_Zad1: CXX_EXECUTABLE_LINKER__PEA_Zad1_Release CMakeFiles/PEA_Zad1.dir/menu/main.cpp.o CMakeFiles/PEA_Zad1.dir/data/dataGenerator.cpp.o CMakeFiles/PEA_Zad1.dir/data/fileOperator.cpp.o CMakeFiles/PEA_Zad1.dir/algorithms/bruteForce.cpp.o CMakeFiles/PEA_Zad1.dir/data/timer.cpp.o
   FLAGS = -O3 -DNDEBUG -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.0.sdk
   OBJECT_DIR = CMakeFiles/PEA_Zad1.dir
   POST_BUILD = :

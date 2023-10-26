@@ -13,4 +13,6 @@ add_executable(PEA_Zad1 menu/main.cpp
         data/fileOperator.h
         data/fileOperator.cpp
         algorithms/bruteForce.cpp
-        algorithms/bruteForce.h)
+        algorithms/bruteForce.h
+        data/timer.cpp
+        data/timer.h)

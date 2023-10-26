@@ -178,23 +178,25 @@ void displayCurrentData(vector<vector<int>> &data) {
 void startBruteForce(vector<vector<int>> &testData) {
     std::cout << "Starting Brute Force algorithm" << std::endl;
     bruteForce bruteForce(testData);
-    auto start = std::chrono::high_resolution_clock::now();
+    auto start = std::chrono::steady_clock::now();
+
+//    auto resultTuple = bruteForce.bruteForceAlgorithm(); //synchroniczne wykonanie
+
 
     std::future<std::tuple<int, std::vector<int>>> promise = std::async(&bruteForce::bruteForceAlgorithm, &bruteForce);
 //    std::cout << "Example of asynchronous execution" << std::endl;
-//    ten kod co sekundę sprawdza, czy algorytm się skończył, jeśli nie to wypisuje komunikat
-/*    std::future_status status;
+//    ten kod sprawdza, czy algorytm się skończył, jeśli nie to co sekundę wypisuje komunikat
+    std::future_status status;
     do {
-        status = promise.wait_for(std::chrono::seconds (1));
-        if (status == std::future_status::timeout) {
-            std::cout << "Algorithm is still running" << std::endl;
+        status = promise.wait_for(std::chrono::seconds(1));
+        if (status == std::future_status::ready) {
+            std::cout << "Algorithm is done running" << std::endl;
         }
-    } while (status != std::future_status::ready);*/
+    } while (status != std::future_status::ready);
 
     auto resultTuple = promise.get();
 
-//    auto resultTuple = bruteForce.bruteForceAlgorithm(); //synchroniczne wykonanie
-    auto end = std::chrono::high_resolution_clock::now();
+    auto end = std::chrono::steady_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
     std::cout << "Algorithm finished" << std::endl;
     std::cout << "Result: " << std::endl;
