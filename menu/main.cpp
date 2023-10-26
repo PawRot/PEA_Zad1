@@ -4,8 +4,6 @@
 #include "../data/fileOperator.h"
 #include "../data/dataGenerator.h"
 #include "../algorithms/bruteForce.h"
-#include "../data/timer.h"
-
 using std::vector, std::string;
 
 void showMenuOptions();
@@ -183,7 +181,8 @@ void startBruteForce(vector<vector<int>> &testData) {
 
 //    auto resultTuple = bruteForce.bruteForceAlgorithm(); //synchroniczne wykonanie
 
-    std::future<std::tuple<int, std::vector<int>>> promise = std::async(&bruteForce::bruteForceAlgorithm, &bruteForce);
+    auto promise = std::async(&bruteForce::bruteForceAlgorithm, &bruteForce);
+
 //    std::cout << "Example of asynchronous execution" << std::endl;
 //    ten kod sprawdza, czy algorytm się skończył, jeśli nie to co sekundę wypisuje komunikat
 //    std::future_status status;
@@ -193,18 +192,6 @@ void startBruteForce(vector<vector<int>> &testData) {
 //            std::cout << "Algorithm is done running" << std::endl;
 //        }
 //    } while (status != std::future_status::ready);
-
-    std::future_status status = promise.wait_for(std::chrono::nanoseconds(0));
-    while (status != std::future_status::ready) {
-        status = promise.wait_for(std::chrono::nanoseconds(0));
-
-        auto currentTime = std::chrono::steady_clock::now();
-        if(std::chrono::duration_cast<std::chrono::seconds>(currentTime - start).count() == 10) {
-            std::cout << "Algorithm is taking too long" << std::endl;
-            return;
-        }
-    }
-
 
     auto resultTuple = promise.get();
 
