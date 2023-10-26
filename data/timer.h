@@ -13,10 +13,11 @@
 
 
 class timer {
+public:
     timer();
     ~timer();
 
-    void startTimer();
+    bool startTimer();
 
 };
 

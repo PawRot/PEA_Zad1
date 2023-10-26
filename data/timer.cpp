@@ -8,6 +8,7 @@ timer::timer() = default;
 
 timer::~timer() = default;
 
-void timer::startTimer() {
+bool timer::startTimer() {
     sleep(2);
+    return true;
 }

@@ -4,6 +4,7 @@
 #include "../data/fileOperator.h"
 #include "../data/dataGenerator.h"
 #include "../algorithms/bruteForce.h"
+#include "../data/timer.h"
 
 using std::vector, std::string;
 
@@ -69,7 +70,7 @@ int main() {
                 break;
             case 9:
                 std::cout << std::endl;
-                if(dataLoaded) {
+                if (dataLoaded) {
                     std::cout << "Provide file name or whole path" << std::endl;
                     string path;
                     std::cin >> path;
@@ -182,17 +183,28 @@ void startBruteForce(vector<vector<int>> &testData) {
 
 //    auto resultTuple = bruteForce.bruteForceAlgorithm(); //synchroniczne wykonanie
 
-
     std::future<std::tuple<int, std::vector<int>>> promise = std::async(&bruteForce::bruteForceAlgorithm, &bruteForce);
 //    std::cout << "Example of asynchronous execution" << std::endl;
 //    ten kod sprawdza, czy algorytm się skończył, jeśli nie to co sekundę wypisuje komunikat
-    std::future_status status;
-    do {
-        status = promise.wait_for(std::chrono::seconds(1));
-        if (status == std::future_status::ready) {
-            std::cout << "Algorithm is done running" << std::endl;
+//    std::future_status status;
+//    do {
+//        status = promise.wait_for(std::chrono::seconds(1));
+//        if (status == std::future_status::ready) {
+//            std::cout << "Algorithm is done running" << std::endl;
+//        }
+//    } while (status != std::future_status::ready);
+
+    std::future_status status = promise.wait_for(std::chrono::nanoseconds(0));
+    while (status != std::future_status::ready) {
+        status = promise.wait_for(std::chrono::nanoseconds(0));
+
+        auto currentTime = std::chrono::steady_clock::now();
+        if(std::chrono::duration_cast<std::chrono::seconds>(currentTime - start).count() == 10) {
+            std::cout << "Algorithm is taking too long" << std::endl;
+            return;
         }
-    } while (status != std::future_status::ready);
+    }
+
 
     auto resultTuple = promise.get();
 
@@ -202,7 +214,7 @@ void startBruteForce(vector<vector<int>> &testData) {
     std::cout << "Result: " << std::endl;
     std::cout << "Path length: " << std::get<0>(resultTuple) << std::endl;
     std::cout << "Path: ";
-    for (int i = 0; i < static_cast<int>(testData.size())+1; i++) {
+    for (int i = 0; i < static_cast<int>(testData.size()) + 1; i++) {
         std::cout << std::get<1>(resultTuple)[i];
         if (i < static_cast<int>(testData.size())) {
             std::cout << " -> ";
