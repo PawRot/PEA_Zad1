@@ -1,10 +1,6 @@
-//
-// Created by Michał Zychowicz on 24/10/2023.
-//
-
 #include "fileOperator.h"
 
-using std::cout, std::endl;
+using std::cout, std::endl, std::vector, std::string;
 
 fileOperator::fileOperator() = default;
 

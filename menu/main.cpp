@@ -1,7 +1,11 @@
 #include <iostream>
+#include <thread>
+#include <future>
 #include "../data/fileOperator.h"
 #include "../data/dataGenerator.h"
 #include "../algorithms/bruteForce.h"
+
+using std::vector, std::string;
 
 void showMenuOptions();
 
@@ -13,11 +17,10 @@ void displayCurrentData(vector<vector<int>> &data);
 
 void startBruteForce(vector<vector<int>> &testData);
 
-
 int main() {
     // punkt wejścia do programu
     int choice = -1;
-    std::string input;
+    string input;
     bool dataLoaded = false;
     vector<vector<int>> testData;
 
@@ -26,6 +29,7 @@ int main() {
         showMenuOptions();
         std::cin >> input;
 
+        // wybór opcji menu
         try {
             choice = std::stoi(input);
         } catch (std::invalid_argument &e) {
@@ -91,7 +95,7 @@ void showMenuOptions() {
 
 vector<vector<int>> loadFromFile(bool &dataLoaded) {
     std::cout << "Enter file path: ";
-    std::string filePath;
+    string filePath;
     std::cin >> filePath;
 
     std::cout << "Loading data from file: " << filePath << std::endl;
@@ -102,6 +106,7 @@ vector<vector<int>> loadFromFile(bool &dataLoaded) {
         return data;
     } else {
         std::cout << "Data not loaded" << std::endl;
+        dataLoaded = false;
         return {};
     }
 
@@ -109,13 +114,14 @@ vector<vector<int>> loadFromFile(bool &dataLoaded) {
 
 vector<vector<int>> generateData(bool &dataLoaded) {
     std::cout << "Enter number of cities: ";
-    std::string input;
+    string input;
     std::cin >> input;
     unsigned int numberOfCities;
     try {
         numberOfCities = std::stoi(input);
     } catch (std::invalid_argument &e) {
         std::cout << "Invalid argument" << std::endl;
+        dataLoaded = false;
         return {};
     }
 
@@ -127,6 +133,7 @@ vector<vector<int>> generateData(bool &dataLoaded) {
         minimumDistance = std::stoi(input);
     } catch (std::invalid_argument &e) {
         std::cout << "Invalid argument" << std::endl;
+        dataLoaded = false;
         return {};
     }
 
@@ -138,6 +145,7 @@ vector<vector<int>> generateData(bool &dataLoaded) {
         maximumDistance = std::stoi(input);
     } catch (std::invalid_argument &e) {
         std::cout << "Invalid argument" << std::endl;
+        dataLoaded = false;
         return {};
     }
     std::cout << "Generating test data" << std::endl;
@@ -148,6 +156,7 @@ vector<vector<int>> generateData(bool &dataLoaded) {
         return data;
     } else {
         std::cout << "Data not generated" << std::endl;
+        dataLoaded = false;
         return {};
     }
 
@@ -169,6 +178,34 @@ void displayCurrentData(vector<vector<int>> &data) {
 void startBruteForce(vector<vector<int>> &testData) {
     std::cout << "Starting Brute Force algorithm" << std::endl;
     bruteForce bruteForce(testData);
-    bruteForce.bruteForceAlgorithm();
+    auto start = std::chrono::high_resolution_clock::now();
 
+    std::future<std::tuple<int, std::vector<int>>> promise = std::async(&bruteForce::bruteForceAlgorithm, &bruteForce);
+//    std::cout << "Example of asynchronous execution" << std::endl;
+//    ten kod co sekundę sprawdza, czy algorytm się skończył, jeśli nie to wypisuje komunikat
+/*    std::future_status status;
+    do {
+        status = promise.wait_for(std::chrono::seconds (1));
+        if (status == std::future_status::timeout) {
+            std::cout << "Algorithm is still running" << std::endl;
+        }
+    } while (status != std::future_status::ready);*/
+
+    auto resultTuple = promise.get();
+
+//    auto resultTuple = bruteForce.bruteForceAlgorithm(); //synchroniczne wykonanie
+    auto end = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+    std::cout << "Algorithm finished" << std::endl;
+    std::cout << "Result: " << std::endl;
+    std::cout << "Path length: " << std::get<0>(resultTuple) << std::endl;
+    std::cout << "Path: ";
+    for (int i = 0; i < static_cast<int>(testData.size())+1; i++) {
+        std::cout << std::get<1>(resultTuple)[i];
+        if (i < static_cast<int>(testData.size())) {
+            std::cout << " -> ";
+        }
+    }
+    std::cout << std::endl;
+    std::cout << "Execution time was: " << duration << " miliseconds" << std::endl;
 }

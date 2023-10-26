@@ -1,7 +1,3 @@
-//
-// Created by Michał Zychowicz on 24/10/2023.
-//
-
 #ifndef PEA_ZAD1_BRUTEFORCE_H
 #define PEA_ZAD1_BRUTEFORCE_H
 
@@ -9,23 +5,22 @@
 #include <vector>
 #include <numeric>
 
-using std::vector;
 
 
 class bruteForce {
 public:
-    explicit bruteForce(const vector<vector<int>>& graph);
+    explicit bruteForce(const std::vector<std::vector<int>> &matrix);
 
     ~bruteForce();
 
-    void bruteForceAlgorithm();
+    std::tuple<int, std::vector<int>> bruteForceAlgorithm();
 
 private:
-    vector<vector<int>> graph;
+    std::vector<std::vector<int>> matrix;
     int numberOfCities;
     int bestPath;
-    vector<int> citiesIndexes;
-    vector<int> bestPathIndexes;
+    std::vector<int> citiesIndexes;
+    std::vector<int> bestPathIndexes;
 
 };
 

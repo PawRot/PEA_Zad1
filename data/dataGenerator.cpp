@@ -1,11 +1,9 @@
-//
-// Created by Michał Zychowicz on 24/10/2023.
-//
-
 #include "dataGenerator.h"
 
+using std::vector;
 
-vector<vector<int>> dataGenerator::generateTestData(unsigned int numberOfCities, unsigned int maxDistance, unsigned int minimumDistance) {
+vector<vector<int>>
+dataGenerator::generateTestData(unsigned int numberOfCities, unsigned int maxDistance, unsigned int minimumDistance) {
     vector<vector<int>> tab(numberOfCities, vector<int>(numberOfCities));
 
     std::random_device rd;
