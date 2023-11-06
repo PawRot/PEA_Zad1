@@ -6,6 +6,7 @@ bruteForce::bruteForce(const vector<vector<int>> &matrix) {
     this->matrix = matrix;
     numberOfCities = static_cast<int>(matrix.size());
     bestPath = INT_MAX;
+    isRunning = true;
     citiesIndexes = vector<int>(numberOfCities);
     bestPathIndexes = vector<int>(numberOfCities);
     std::iota(citiesIndexes.begin(), citiesIndexes.end(), 0);
@@ -23,6 +24,9 @@ bruteForce::bruteForceAlgorithm() {
             if (currentPath > bestPath) {
                 break;
             }
+        }
+        if (!isRunning) {
+            throw std::runtime_error("Algorithm stopped");
         }
         currentPath += matrix[citiesIndexes[numberOfCities - 1]][citiesIndexes[0]];
 

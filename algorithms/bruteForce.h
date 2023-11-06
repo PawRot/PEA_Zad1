@@ -16,6 +16,8 @@ public:
 
     std::tuple<int, std::vector<int>> bruteForceAlgorithm();
 
+    std::atomic_bool isRunning;
+
 private:
     std::vector<std::vector<int>> matrix;
     int numberOfCities;

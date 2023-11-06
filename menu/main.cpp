@@ -192,9 +192,11 @@ void startBruteForce(vector<vector<int>> &testData) {
     bruteForce bruteForce(testData);
     auto start = std::chrono::steady_clock::now();
 
-    auto resultTuple = bruteForce.bruteForceAlgorithm(); //synchroniczne wykonanie
+    std::launch::async;
 
-//    auto promise = std::async(&bruteForce::bruteForceAlgorithm, &bruteForce);
+//    auto resultTuple = bruteForce.bruteForceAlgorithm(); //synchroniczne wykonanie
+
+    auto promise = std::async(std::launch::async, &bruteForce::bruteForceAlgorithm, &bruteForce);
 
 //    std::cout << "Example of asynchronous execution" << std::endl;
 //    ten kod sprawdza, czy algorytm się skończył, jeśli nie to co sekundę wypisuje komunikat
@@ -206,22 +208,35 @@ void startBruteForce(vector<vector<int>> &testData) {
 //        }
 //    } while (status != std::future_status::ready);
 
-//    auto resultTuple = promise.get();
 
-    auto end = std::chrono::steady_clock::now();
-    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
-    std::cout << "Algorithm finished" << std::endl;
-    std::cout << "Result: " << std::endl;
-    std::cout << "Path length: " << std::get<0>(resultTuple) << std::endl;
-    std::cout << "Path: ";
-    for (int i = 0; i < static_cast<int>(testData.size()) + 1; i++) {
-        std::cout << std::get<1>(resultTuple)[i];
-        if (i < static_cast<int>(testData.size())) {
-            std::cout << " -> ";
-        }
+    std::chrono::seconds span(5);
+    if (promise.wait_for(span) == std::future_status::timeout) {
+        std::cout << "Algorithm is still running" << std::endl;
+        bruteForce.isRunning = false;
     }
-    std::cout << std::endl;
-    std::cout << "Execution time was: " << duration << " miliseconds" << std::endl;
+    try {
+        auto resultTuple = promise.get();
+        auto end = std::chrono::steady_clock::now();
+        auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+        std::cout << "Algorithm finished" << std::endl;
+        std::cout << "Result: " << std::endl;
+        std::cout << "Path length: " << std::get<0>(resultTuple) << std::endl;
+        std::cout << "Path: ";
+        for (int i = 0; i < static_cast<int>(testData.size()) + 1; i++) {
+            std::cout << std::get<1>(resultTuple)[i];
+            if (i < static_cast<int>(testData.size())) {
+                std::cout << " -> ";
+            }
+        }
+        std::cout << std::endl;
+        std::cout << "Execution time was: " << duration << " miliseconds" << std::endl;
+    } catch (std::runtime_error &e) {
+        std::cout << e.what() << std::endl;
+        std::cout << "Algorithm execution time was too long, terminated" << std::endl;
+        return;
+    }
+
+
 }
 
 void startBranchBound(vector<vector<int>> &testData) {
