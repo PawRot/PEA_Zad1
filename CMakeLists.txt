@@ -14,4 +14,6 @@ add_executable(PEA_Zad1 menu/main.cpp
         data/fileOperator.cpp
         algorithms/bruteForce.cpp
         algorithms/bruteForce.h
+        algorithms/BranchBound.cpp
+        algorithms/BranchBound.h
 )

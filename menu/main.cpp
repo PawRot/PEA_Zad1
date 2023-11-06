@@ -4,6 +4,7 @@
 #include "../data/fileOperator.h"
 #include "../data/dataGenerator.h"
 #include "../algorithms/bruteForce.h"
+#include "../algorithms/BranchBound.h"
 using std::vector, std::string;
 
 void showMenuOptions();
@@ -15,6 +16,8 @@ vector<vector<int>> generateData(bool &dataLoaded);
 void displayCurrentData(vector<vector<int>> &data);
 
 void startBruteForce(vector<vector<int>> &testData);
+
+void startBranchBound(vector<vector<int>> &testData);
 
 int main() {
     // punkt wejścia do programu
@@ -66,6 +69,15 @@ int main() {
                 }
                 std::cout << std::endl;
                 break;
+            case 5:
+                std::cout << std::endl;
+                if (dataLoaded) {
+                    startBranchBound(testData);
+                } else {
+                    std::cout << "No data loaded" << std::endl;
+                }
+                std::cout << std::endl;
+                break;
             case 9:
                 std::cout << std::endl;
                 if (dataLoaded) {
@@ -88,6 +100,7 @@ void showMenuOptions() {
     std::cout << "2. Generate test data" << std::endl;
     std::cout << "3. Display current test data" << std::endl;
     std::cout << "4. Start Brute Force algorithm" << std::endl;
+    std::cout << "5. Start Branch & Bound algorithm" << std::endl;
     std::cout << "9. Save current data to file" << std::endl;
     std::cout << "0. Exit" << std::endl;
 }
@@ -209,4 +222,12 @@ void startBruteForce(vector<vector<int>> &testData) {
     }
     std::cout << std::endl;
     std::cout << "Execution time was: " << duration << " miliseconds" << std::endl;
+}
+
+void startBranchBound(vector<vector<int>> &testData) {
+    std::cout << "Starting Branch and Bound algorithm" << std::endl;
+//    BranchBound branchBound(testData);
+    auto start = std::chrono::steady_clock::now();
+
+//    auto resultTuple = branchBound.BranchAndBoundAlgorithm(); //synchroniczne wykonanie
 }
