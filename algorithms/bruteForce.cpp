@@ -34,9 +34,11 @@ bruteForce::bruteForceAlgorithm() {
             bestPathIndexes = citiesIndexes;
             bestPathIndexes.push_back(0);
         }
+#ifdef testEnable
         if (!isRunning) {
             throw std::runtime_error("Algorithm stopped");
         }
+#endif
     } while (std::next_permutation(citiesIndexes.begin(), citiesIndexes.end()));
     // Funkcja next_permutation używana jest do uzyskiwania kolejnych permutacji, kiedy wszystkie permutacje zostały wygenerowane, zwraca false, co kończy pętle.
     // Możliwa optymalizacja: Ponieważ do każdego miasta musimy wjechać i z niego wyjechać, możemy założyć, że miasto, które jest sprawdzane jako pierwsze (w tym przypadku miasto o indeksie 0),
