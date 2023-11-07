@@ -15,8 +15,9 @@ bruteForce::bruteForce(const vector<vector<int>> &matrix) {
 bruteForce::~bruteForce() = default;
 
 
-std::tuple<int, vector<int>>
+std::tuple<int, vector<int>, long long>
 bruteForce::bruteForceAlgorithm() {
+    auto start = std::chrono::steady_clock::now();
     do {
         int currentPath = 0;
         for (int i = 0; i < numberOfCities - 1; i++) {
@@ -25,9 +26,7 @@ bruteForce::bruteForceAlgorithm() {
                 break;
             }
         }
-        if (!isRunning) {
-            throw std::runtime_error("Algorithm stopped");
-        }
+
         currentPath += matrix[citiesIndexes[numberOfCities - 1]][citiesIndexes[0]];
 
         if (currentPath < bestPath) {
@@ -35,11 +34,16 @@ bruteForce::bruteForceAlgorithm() {
             bestPathIndexes = citiesIndexes;
             bestPathIndexes.push_back(0);
         }
+        if (!isRunning) {
+            throw std::runtime_error("Algorithm stopped");
+        }
     } while (std::next_permutation(citiesIndexes.begin(), citiesIndexes.end()));
     // Funkcja next_permutation używana jest do uzyskiwania kolejnych permutacji, kiedy wszystkie permutacje zostały wygenerowane, zwraca false, co kończy pętle.
     // Możliwa optymalizacja: Ponieważ do każdego miasta musimy wjechać i z niego wyjechać, możemy założyć, że miasto, które jest sprawdzane jako pierwsze (w tym przypadku miasto o indeksie 0),
     // jest zawsze na początku i końcu najlepszej ścieżki (nie musielibyśmy uwzględniać go w permutacjach)
+    auto end = std::chrono::steady_clock::now();
 
-    return {bestPath, bestPathIndexes};
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+    return {bestPath, bestPathIndexes, duration};
 }
 

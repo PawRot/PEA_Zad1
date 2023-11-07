@@ -14,7 +14,7 @@ public:
 
     ~bruteForce();
 
-    std::tuple<int, std::vector<int>> bruteForceAlgorithm();
+    std::tuple<int, std::vector<int>, long long> bruteForceAlgorithm();
 
     std::atomic_bool isRunning;
 

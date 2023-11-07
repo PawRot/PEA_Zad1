@@ -190,9 +190,6 @@ void displayCurrentData(vector<vector<int>> &data) {
 void startBruteForce(vector<vector<int>> &testData) {
     std::cout << "Starting Brute Force algorithm" << std::endl;
     bruteForce bruteForce(testData);
-    auto start = std::chrono::steady_clock::now();
-
-    std::launch::async;
 
 //    auto resultTuple = bruteForce.bruteForceAlgorithm(); //synchroniczne wykonanie
 
@@ -216,8 +213,7 @@ void startBruteForce(vector<vector<int>> &testData) {
     }
     try {
         auto resultTuple = promise.get();
-        auto end = std::chrono::steady_clock::now();
-        auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+        auto duration = std::get<2>(resultTuple);
         std::cout << "Algorithm finished" << std::endl;
         std::cout << "Result: " << std::endl;
         std::cout << "Path length: " << std::get<0>(resultTuple) << std::endl;
