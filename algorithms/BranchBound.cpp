@@ -20,65 +20,60 @@ BranchBound::BranchBound(const std::vector<std::vector<int>> &matrix) {
 BranchBound::~BranchBound() = default;
 
 std::tuple<int, std::vector<int>, long long> BranchBound::branchBoundAlgorithm() {
-
+    auto start = std::chrono::steady_clock::now();
     Node root;
     root.level = 0;
     root.path = path;
-    root.path[0] = 0;
-    root.path[1] = 0;
-    root.prevCity = 0;
-    root.cost = 0;
-    root.bound = calculateLowerBound(root);
+    root.lowerBound = calculateLowerBound(root);
     priorityQueue.push(root);
 
-    do {
+    while (!priorityQueue.empty()) {
         Node node = priorityQueue.top();
         priorityQueue.pop();
-        if (node.bound < bestUpperBound) {
+        if (node.lowerBound < bestUpperBound) {
             for (int i = 1; i < numberOfCities; i++) {
-                if (node.path[i] == -1) {
-                    continue;
-                }
-                Node newNode;
-                newNode.level = node.level + 1;
-                newNode.path = node.path;
-                newNode.path[node.level + 1] = -1;
-                newNode.path[node.level] = citiesIndexes[i];
-                newNode.prevCity = citiesIndexes[i];
-                newNode.cost = node.cost + dataMatrix[node.prevCity][citiesIndexes[i]];
-                if (newNode.level == numberOfCities - 2) {
-                    newNode.cost += dataMatrix[citiesIndexes[i]][0];
-                }
-                newNode.bound = calculateLowerBound(newNode);
-                if (newNode.bound < bestUpperBound) {
-                    priorityQueue.push(newNode);
+                if (std::find(node.path.begin(), node.path.end(), i) == node.path.end()) {
+                    Node newNode;
+                    newNode.level = node.level + 1;
+                    newNode.path = node.path;
+                    newNode.path[newNode.level] = i;
+                    if (newNode.level == numberOfCities - 2) {
+                        for (int j = 1; j < numberOfCities; j++) {
+                            if (std::find(newNode.path.begin(), newNode.path.end(), j) == newNode.path.end()) {
+                                newNode.path[newNode.level + 1] = j;
+                                newNode.path[newNode.level + 2] = 0;
+                                newNode.lowerBound = calculateLowerBound(newNode);
+                                if (newNode.lowerBound < bestUpperBound) {
+                                    bestUpperBound = newNode.lowerBound;
+                                    bestPathIndexes = newNode.path;
+                                }
+                            }
+                        }
+                    } else {
+                        newNode.lowerBound = calculateLowerBound(newNode);
+                        if (newNode.lowerBound < bestUpperBound) {
+                            priorityQueue.push(newNode);
+                        }
+                    }
                 }
             }
         }
-    } while (!priorityQueue.empty());
-
-
+    }
     return {bestUpperBound, bestPathIndexes, 0};
 }
 
 int BranchBound::calculateLowerBound(const Node &node) {
     int lowerBound = 0;
-    int min;
-    int sum = 0;
-    for (int i = 0; i < numberOfCities; i++) {
-        min = INT_MAX;
-        for (int j = 0; j < numberOfCities; j++) {
-            if (dataMatrix[i][j] < min && i != j) {
-                min = dataMatrix[i][j];
-            }
-        }
-        if (min != INT_MAX) {
-            lowerBound += min;
-        }
+    int currentPath = 0;
+    int min1 = INT_MAX;
+    int min2 = INT_MAX;
+    for (int i = 0; i < node.level; i++) {
+        currentPath += dataMatrix[node.path[i]][node.path[i + 1]];
     }
-    for (int i = 0; i <= node.level; i++) {
-        sum += dataMatrix[node.path[i]][node.path[i + 1]];
+    for (int i = node.level + 1; i < numberOfCities; i++) {
+        min1 = std::min(min1, dataMatrix[node.path[node.level]][i]);
+        min2 = std::min(min2, dataMatrix[i][0]);
     }
-    lowerBound += sum;
+    lowerBound = currentPath + min1 + min2;
     return lowerBound;
 }

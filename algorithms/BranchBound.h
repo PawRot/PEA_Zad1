@@ -22,15 +22,13 @@ private:
     std::vector<std::vector<int>> dataMatrix;
     struct Node {
         int level;
-        int bound;
+        int lowerBound;
         std::vector<int> path;
-        int prevCity;
-        int cost;
     };
 
     struct compareNodes {
         bool operator()(const Node &node1, const Node &node2) {
-            return node1.bound > node2.bound;
+            return node1.lowerBound > node2.lowerBound;
         }
     };
 
@@ -40,6 +38,7 @@ private:
     std::vector<int> bestPathIndexes; // indexes of best path
     std::vector<int> path;
     int bestUpperBound; // current best path length
+    int bestLowerBound; // current best lower lowerBound
 
     int calculateLowerBound(const Node &node);
 
