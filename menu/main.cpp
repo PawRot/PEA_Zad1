@@ -195,6 +195,7 @@ void startBruteForce(vector<vector<int>> &testData) {
 
     auto promise = std::async(std::launch::async, &bruteForce::bruteForceAlgorithm, &bruteForce);
 
+    {
 //    std::cout << "Example of asynchronous execution" << std::endl;
 //    ten kod sprawdza, czy algorytm się skończył, jeśli nie to co sekundę wypisuje komunikat
 //    std::future_status status;
@@ -204,7 +205,7 @@ void startBruteForce(vector<vector<int>> &testData) {
 //            std::cout << "Algorithm is done running" << std::endl;
 //        }
 //    } while (status != std::future_status::ready);
-
+    }
 
     std::chrono::seconds span(5);
     if (promise.wait_for(span) == std::future_status::timeout) {
@@ -237,8 +238,20 @@ void startBruteForce(vector<vector<int>> &testData) {
 
 void startBranchBound(vector<vector<int>> &testData) {
     std::cout << "Starting Branch and Bound algorithm" << std::endl;
-//    BranchBound branchBound(testData);
-    auto start = std::chrono::steady_clock::now();
+    BranchBound branchBound(testData);
 
-//    auto resultTuple = branchBound.BranchAndBoundAlgorithm(); //synchroniczne wykonanie
+    auto resultTuple = branchBound.branchBoundAlgorithm(); //synchroniczne wykonanie
+
+    std::cout << "Result: " << std::endl;
+    std::cout << "Path length: " << std::get<0>(resultTuple) << std::endl;
+    std::cout << "Path: ";
+    for (int i = 0; i < static_cast<int>(testData.size()) + 1; i++) {
+        std::cout << std::get<1>(resultTuple)[i];
+        if (i < static_cast<int>(testData.size())) {
+            std::cout << " -> ";
+        }
+    }
+    std::cout << std::endl;
+    std::cout << "Execution time was: " << std::get<2>(resultTuple) << " miliseconds" << std::endl;
+
 }
