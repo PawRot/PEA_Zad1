@@ -38,7 +38,6 @@ private:
         }
     };
 
-    static bool findNonNegative(int a, int b);
 
     std::priority_queue<Node, std::deque<Node>, compareNodes> priorityQueue;
     unsigned long numberOfCities;
@@ -46,7 +45,7 @@ private:
     int bestUpperBound; // current best path length
     std::vector<int> smallestValueRow, smallestValueColumn;
 
-    int calculateLowerBound(const Node &node);
+    void calculateLowerBound(Node &node);
 
 
 
