@@ -10,6 +10,8 @@
 #include <tuple>
 #include <atomic>
 
+#include <iostream>
+
 class BranchBound {
 
 public:
@@ -35,6 +37,8 @@ private:
             return node1.lowerBound > node2.lowerBound;
         }
     };
+
+    static bool findNonNegative(int a, int b);
 
     std::priority_queue<Node, std::deque<Node>, compareNodes> priorityQueue;
     unsigned long numberOfCities;
