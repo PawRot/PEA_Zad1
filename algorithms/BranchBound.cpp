@@ -2,78 +2,75 @@
 
 #include "BranchBound.h"
 
-BranchBound::BranchBound(const std::vector<std::vector<int>> &matrix) {
-    this->dataMatrix = matrix;
-    this->numberOfCities = static_cast<int>(matrix.size());
-    this->bestUpperBound = INT_MAX;
-    this->isRunning = true;
-    this->citiesIndexes.resize(numberOfCities);
-    std::iota(citiesIndexes.begin(), citiesIndexes.end(), 0);
-    this->path.resize(numberOfCities + 1);
-    this->bestPathIndexes.resize(numberOfCities + 1);
-    this->bestPathIndexes[numberOfCities] = 0;
-    this->path[numberOfCities] = 0;
-    this->path[0] = 0;
-    this->bestPathIndexes[0] = 0;
+BranchBound::BranchBound(const std::vector<std::vector<int>> &matrix)
+        : dataMatrix(matrix), numberOfCities(matrix.size()), bestUpperBound(INT_MAX), isRunning(true) {
+    bestPathIndexes.resize(numberOfCities);
 }
 
 BranchBound::~BranchBound() = default;
 
 std::tuple<int, std::vector<int>, long long> BranchBound::branchBoundAlgorithm() {
     auto start = std::chrono::steady_clock::now();
-    Node root;
-    root.level = 0;
-    root.path = path;
+    // Find the smallest value in each row and column
+    for (int i = 0; i < numberOfCities; ++i) {
+        smallestValueRow.push_back(*std::min_element(dataMatrix[i].begin(), dataMatrix[i].end()));
+    }
+    for (int i = 0; i < numberOfCities; ++i) {
+        std::vector<int> column;
+        column.reserve(numberOfCities);
+        for (int j = 0; j < numberOfCities; ++j) {
+            column.push_back(dataMatrix[j][i]);
+        }
+        smallestValueColumn.push_back(*std::min_element(column.begin(), column.end()));
+    }
+    // Initialize priority queue
+    Node root{0, 0, {0}};
     root.lowerBound = calculateLowerBound(root);
     priorityQueue.push(root);
 
     while (!priorityQueue.empty()) {
         Node node = priorityQueue.top();
         priorityQueue.pop();
-        if (node.lowerBound < bestUpperBound) {
-            for (int i = 1; i < numberOfCities; i++) {
-                if (std::find(node.path.begin(), node.path.end(), i) == node.path.end()) {
-                    Node newNode;
-                    newNode.level = node.level + 1;
-                    newNode.path = node.path;
-                    newNode.path[newNode.level] = i;
-                    if (newNode.level == numberOfCities - 2) {
-                        for (int j = 1; j < numberOfCities; j++) {
-                            if (std::find(newNode.path.begin(), newNode.path.end(), j) == newNode.path.end()) {
-                                newNode.path[newNode.level + 1] = j;
-                                newNode.path[newNode.level + 2] = 0;
-                                newNode.lowerBound = calculateLowerBound(newNode);
-                                if (newNode.lowerBound < bestUpperBound) {
-                                    bestUpperBound = newNode.lowerBound;
-                                    bestPathIndexes = newNode.path;
-                                }
-                            }
-                        }
-                    } else {
-                        newNode.lowerBound = calculateLowerBound(newNode);
-                        if (newNode.lowerBound < bestUpperBound) {
-                            priorityQueue.push(newNode);
-                        }
-                    }
+
+        if (node.level == numberOfCities - 1) {
+            node.path.push_back(0);
+            if (node.lowerBound < bestUpperBound) {
+                bestPathIndexes = node.path;
+                bestUpperBound = node.lowerBound;
+            }
+            continue;
+        }
+
+        for (int i = 0; i < numberOfCities; ++i) {
+            if (std::find(node.path.begin(), node.path.end(), i) == node.path.end()) {
+                Node childNode;
+                childNode.path = node.path;
+                childNode.path.push_back(i);
+                childNode.level = node.level + 1;
+                childNode.lowerBound = node.lowerBound + dataMatrix[node.path[node.level]][i];
+                if (childNode.level == numberOfCities - 1) {
+                    childNode.lowerBound += dataMatrix[childNode.path[childNode.level]][0];
+                } else {
+                    childNode.lowerBound += calculateLowerBound(childNode);
+                }
+
+                if (childNode.lowerBound < bestUpperBound) {
+                    priorityQueue.push(childNode);
                 }
             }
         }
     }
-    return {bestUpperBound, bestPathIndexes, 0};
+    auto end = std::chrono::steady_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+    return {bestUpperBound, bestPathIndexes, duration};
 }
 
 int BranchBound::calculateLowerBound(const Node &node) {
     int lowerBound = 0;
-    int currentPath = 0;
-    int min1 = INT_MAX;
-    int min2 = INT_MAX;
-    for (int i = 0; i < node.level; i++) {
-        currentPath += dataMatrix[node.path[i]][node.path[i + 1]];
+    for (int i = 0; i < numberOfCities; ++i) {
+        if (std::find(node.path.begin(), node.path.end(), i) == node.path.end()) {
+            lowerBound += smallestValueRow[i];
+        }
     }
-    for (int i = node.level + 1; i < numberOfCities; i++) {
-        min1 = std::min(min1, dataMatrix[node.path[node.level]][i]);
-        min2 = std::min(min2, dataMatrix[i][0]);
-    }
-    lowerBound = currentPath + min1 + min2;
     return lowerBound;
 }

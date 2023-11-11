@@ -6,6 +6,9 @@
 #include <queue>
 #include <algorithm>
 #include <numeric>
+#include <vector>
+#include <tuple>
+#include <atomic>
 
 class BranchBound {
 
@@ -20,6 +23,7 @@ public:
 
 private:
     std::vector<std::vector<int>> dataMatrix;
+
     struct Node {
         int level;
         int lowerBound;
@@ -32,13 +36,11 @@ private:
         }
     };
 
-    std::priority_queue<Node, std::vector<Node>, compareNodes> priorityQueue;
-    int numberOfCities;
-    std::vector<int> citiesIndexes; // indexes of cities
+    std::priority_queue<Node, std::deque<Node>, compareNodes> priorityQueue;
+    unsigned long numberOfCities;
     std::vector<int> bestPathIndexes; // indexes of best path
-    std::vector<int> path;
     int bestUpperBound; // current best path length
-    int bestLowerBound; // current best lower lowerBound
+    std::vector<int> smallestValueRow, smallestValueColumn;
 
     int calculateLowerBound(const Node &node);
 
