@@ -26,7 +26,7 @@ std::tuple<int, std::vector<int>, long long> BranchBound::branchBoundAlgorithm()
         priorityQueue.pop();
 
 
-        if (node.lowerBound < bestBound) {
+        if (node.lowerBound <= bestBound) {
 
             for (int i = 0; i < numberOfCities; ++i) {
                 if (std::find(node.path.begin(), node.path.end(), i) == node.path.end()) {
@@ -41,28 +41,33 @@ std::tuple<int, std::vector<int>, long long> BranchBound::branchBoundAlgorithm()
                     if (childNode.path.size() == numberOfCities) {
                         childNode.path.push_back(0);
                         calculateLeafBound(childNode);
-                        if (childNode.lowerBound < bestBound) {
+                        if (childNode.lowerBound <= bestBound) {
                             bestBound = childNode.lowerBound;
                             bestPathIndexes = childNode.path;
+//                        for (int k : childNode.path) {
+//                            std::cout << k << " ";
+//                        }
+//                        std::cout << " - " << childNode.lowerBound << " - Full path";
+//                        std::cout << std::endl;
                         }
-                        for (int k : childNode.path) {
-                            std::cout << k << " ";
-                        }
-                        std::cout << " - " << childNode.lowerBound << " - Full path";
-                        std::cout << std::endl;
+//                        for (int k : childNode.path) {
+//                            std::cout << k << " ";
+//                        }
+//                        std::cout << " - " << childNode.lowerBound << " - Full path";
+//                        std::cout << std::endl;
 
 //                    childNode.lowerBound = node.lowerBound;
 //                    childNode.lowerBound += dataMatrix[childNode.path[childNode.path.size() - 1]][0];
 //                    calculateLowerBound(childNode);
                     } else {
                         calculateLowerBound(childNode);
-                        if (childNode.lowerBound < bestBound) {
+                        if (childNode.lowerBound <= bestBound) {
                             priorityQueue.push(childNode);
-                            for (int k : childNode.path) {
-                                std::cout << k << " ";
-                            }
-                            std::cout << " - " << childNode.lowerBound;
-                            std::cout << std::endl;
+//                            for (int k : childNode.path) {
+//                                std::cout << k << " ";
+//                            }
+//                            std::cout << " - " << childNode.lowerBound;
+//                            std::cout << std::endl;
 
                         }
                     }
@@ -82,7 +87,7 @@ void BranchBound::calculateLowerBound(Node &node) {
     int lowerBound = 0;
     // find the lowerBound for partial path
     // calculate value of current path
-    for (int i = 0; i < node.path.size(); i++) {
+    for (int i = 0; i < node.path.size() - 1; i++) {
         lowerBound += dataMatrix[node.path[i]][node.path[i + 1]];
     }
     if (node.path.size() == numberOfCities) {
@@ -113,10 +118,17 @@ void BranchBound::calculateLowerBound(Node &node) {
 }
 
 void BranchBound::calculateLeafBound(Node &node) {
-    int lowerBound = 0;
-    for (int i = 0; i < node.path.size(); i++) {
-        lowerBound += dataMatrix[node.path[i]][node.path[i+1]];
+    for (int k : node.path) {
+//        std::cout << k << " ";
     }
+//    std::cout << "end of path" << std::endl;
+    int lowerBound = 0;
+    for (int i = 0; i < node.path.size() - 1; ++i) {
+        lowerBound += dataMatrix[node.path[i]][node.path[i+1]];
+//        std::cout << lowerBound << " ";
+//        std::cout << dataMatrix[node.path[i]][node.path[i+1]] << " ";
+    }
+//    std::cout << "end" << std::endl;
     node.lowerBound = lowerBound;
 }
 
