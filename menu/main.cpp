@@ -245,7 +245,7 @@ void startBranchBound(vector<vector<int>> &testData) {
     std::cout << "Result: " << std::endl;
     std::cout << "Path length: " << std::get<0>(resultTuple) << std::endl;
     std::cout << "Path: ";
-    for (int i = 0; i < static_cast<int>(testData.size()) + 1; i++) {
+    for (int i = 0; i < static_cast<int>(std::get<1>(resultTuple).size()); i++) {
         std::cout << std::get<1>(resultTuple)[i];
         if (i < static_cast<int>(testData.size())) {
             std::cout << " -> ";

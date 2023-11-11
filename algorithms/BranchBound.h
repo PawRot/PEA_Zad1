@@ -27,7 +27,6 @@ private:
     std::vector<std::vector<int>> dataMatrix;
 
     struct Node {
-        int level;
         int lowerBound;
         std::vector<int> path;
     };
@@ -42,10 +41,16 @@ private:
     std::priority_queue<Node, std::deque<Node>, compareNodes> priorityQueue;
     unsigned long numberOfCities;
     std::vector<int> bestPathIndexes; // indexes of best path
-    int bestUpperBound; // current best path length
+    int bestBound; // current best path length
     std::vector<int> smallestValueRow, smallestValueColumn;
 
+
     void calculateLowerBound(Node &node);
+
+    void calculateLeafBound(Node &node);
+
+    void calculateRootBound(Node &node);
+
 
 
 
