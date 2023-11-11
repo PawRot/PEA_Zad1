@@ -21,28 +21,31 @@ public:
 
     std::tuple<int, std::vector<int>, long long> branchBoundAlgorithm();
 
+    // atomic boolean for testing max N for set execution time
     std::atomic_bool isRunning;
 
 private:
+    // matrix that contains data
     std::vector<std::vector<int>> dataMatrix;
 
+    // node struct
     struct Node {
         int lowerBound;
         std::vector<int> path;
     };
 
+    // custom compare
     struct compareNodes {
         bool operator()(const Node &node1, const Node &node2) {
             return node1.lowerBound > node2.lowerBound;
         }
     };
 
-
-    std::priority_queue<Node, std::deque<Node>, compareNodes> priorityQueue;
+    // priority queue using vector as container
+    std::priority_queue<Node, std::vector<Node>, compareNodes> priorityQueue;
     unsigned long numberOfCities;
     std::vector<int> bestPathIndexes; // indexes of best path
     int bestBound; // current best path length
-    std::vector<int> smallestValueRow, smallestValueColumn;
 
 
     void calculateLowerBound(Node &node);
@@ -50,10 +53,6 @@ private:
     void calculateLeafBound(Node &node);
 
     void calculateRootBound(Node &node);
-
-
-
-
 
 };
 
