@@ -9,9 +9,13 @@
 #include <vector>
 #include <tuple>
 #include <atomic>
+#include <stack>
+
+#include "BranchBoundNode.h"
 
 #include <iostream>
 
+template<typename T>
 class BranchBound {
 
 public:
@@ -24,15 +28,12 @@ public:
     // atomic boolean for testing max N for set execution time
     std::atomic_bool isRunning;
 
+
 private:
     // matrix that contains data
     std::vector<std::vector<int>> dataMatrix;
 
-    // node struct
-    struct Node {
-        int lowerBound;
-        std::vector<int> path;
-    };
+
 
     // custom compare
     struct compareNodes {
@@ -42,7 +43,8 @@ private:
     };
 
     // priority queue using vector as container
-    std::priority_queue<Node, std::vector<Node>, compareNodes> priorityQueue;
+    // queue can either be a priority queue for best first or Stack for DFS
+    T queue;
     unsigned long numberOfCities;
     std::vector<int> bestPathIndexes; // indexes of best path
     int bestBound; // current best path length

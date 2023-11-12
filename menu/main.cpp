@@ -1,6 +1,8 @@
 #include <iostream>
 #include <thread>
 #include <future>
+#include <stack>
+#include "../algorithms/BranchBoundNode.h"
 #include "../data/fileOperator.h"
 #include "../data/dataGenerator.h"
 #include "../algorithms/bruteForce.h"
@@ -238,7 +240,7 @@ void startBruteForce(vector<vector<int>> &testData) {
 
 void startBranchBound(vector<vector<int>> &testData) {
     std::cout << "Starting Branch and Bound algorithm" << std::endl;
-    BranchBound branchBound(testData);
+    BranchBound<std::stack<Node>> branchBound(testData);
 
     auto resultTuple = branchBound.branchBoundAlgorithm(); //synchroniczne wykonanie
 

@@ -1,15 +1,16 @@
 
-
 #include "BranchBound.h"
 
-BranchBound::BranchBound(const std::vector<std::vector<int>> &matrix)
+template<typename T>
+BranchBound<T>::BranchBound(const std::vector<std::vector<int>> &matrix)
         : dataMatrix(matrix), numberOfCities(matrix.size()), bestBound(INT_MAX), isRunning(true) {
     bestPathIndexes.resize(numberOfCities);
 }
+template<typename T>
+BranchBound<T>::~BranchBound() = default;
 
-BranchBound::~BranchBound() = default;
-
-std::tuple<int, std::vector<int>, long long> BranchBound::branchBoundAlgorithm() {
+template<typename T>
+std::tuple<int, std::vector<int>, long long> BranchBound<T>::branchBoundAlgorithm() {
 
 
     auto start = std::chrono::steady_clock::now();
@@ -19,13 +20,13 @@ std::tuple<int, std::vector<int>, long long> BranchBound::branchBoundAlgorithm()
     // Initialize priority queue
     Node root{0, {0}};
     calculateRootBound(root);
-    priorityQueue.push(root);
+    queue.push(root);
 
     // execute while queue is not empty
-    while (!priorityQueue.empty()) {
+    while (!queue.empty()) {
         // get node from top of queue and remove it
-        Node node = priorityQueue.top();
-        priorityQueue.pop();
+        Node node = queue.top();
+        queue.pop();
 
         // check if node can lead to better solution
         if (node.lowerBound < bestBound) {
@@ -53,7 +54,7 @@ std::tuple<int, std::vector<int>, long long> BranchBound::branchBoundAlgorithm()
                         // calculate lowerBound of node, and if it's lower than bestBound, add it to the queue
                         calculateLowerBound(childNode);
                         if (childNode.lowerBound < bestBound) {
-                            priorityQueue.push(childNode);
+                            queue.push(childNode);
                         }
                     }
                 }
@@ -65,8 +66,8 @@ std::tuple<int, std::vector<int>, long long> BranchBound::branchBoundAlgorithm()
     return {bestBound, bestPathIndexes, duration};
 }
 
-
-void BranchBound::calculateLowerBound(Node &node) {
+template<typename T>
+void BranchBound<T>::calculateLowerBound(Node &node) {
     int lowerBound = 0;
     // find the lowerBound for partial path
     // calculate value of cities in current path
@@ -96,7 +97,8 @@ void BranchBound::calculateLowerBound(Node &node) {
     node.lowerBound = lowerBound;
 }
 
-void BranchBound::calculateLeafBound(Node &node) {
+template<typename T>
+void BranchBound<T>::calculateLeafBound(Node &node) {
     // calculate distance between all cities in path
     int lowerBound = 0;
     for (int i = 0; i < node.path.size() - 1; ++i) {
@@ -105,7 +107,8 @@ void BranchBound::calculateLeafBound(Node &node) {
     node.lowerBound = lowerBound;
 }
 
-void BranchBound::calculateRootBound(BranchBound::Node &node) {
+template<typename T>
+void BranchBound<T>::calculateRootBound(Node &node) {
     // calculate lower bound of root node
     int lowerBound = 0;
     // find minimum value in each row and add it to lowerBound
@@ -123,4 +126,7 @@ void BranchBound::calculateRootBound(BranchBound::Node &node) {
     node.lowerBound = lowerBound;
 
 }
+
+template class BranchBound<std::stack<Node>>;
+template class BranchBound
 
