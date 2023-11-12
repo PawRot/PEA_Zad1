@@ -13,4 +13,11 @@ struct Node {
     std::vector<int> path;
 };
 
+// custom compare
+struct compareNodes {
+    bool operator()(const Node &node1, const Node &node2) {
+        return node1.lowerBound > node2.lowerBound;
+    }
+};
+
 #endif //PEA_ZAD1_BRANCHBOUNDNODE_H

@@ -240,8 +240,8 @@ void startBruteForce(vector<vector<int>> &testData) {
 
 void startBranchBound(vector<vector<int>> &testData) {
     std::cout << "Starting Branch and Bound algorithm" << std::endl;
-    BranchBound<std::stack<Node>> branchBound(testData);
-
+//    BranchBound<std::stack<Node>> branchBound(testData);
+    BranchBound<std::priority_queue<Node, std::vector<Node>, compareNodes>> branchBound(testData);
     auto resultTuple = branchBound.branchBoundAlgorithm(); //synchroniczne wykonanie
 
     std::cout << "Result: " << std::endl;

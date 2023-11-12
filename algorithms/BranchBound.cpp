@@ -22,6 +22,7 @@ std::tuple<int, std::vector<int>, long long> BranchBound<T>::branchBoundAlgorith
     calculateRootBound(root);
     queue.push(root);
 
+
     // execute while queue is not empty
     while (!queue.empty()) {
         // get node from top of queue and remove it
@@ -128,5 +129,5 @@ void BranchBound<T>::calculateRootBound(Node &node) {
 }
 
 template class BranchBound<std::stack<Node>>;
-template class BranchBound
+template class BranchBound<std::priority_queue<Node, std::vector<Node>, compareNodes>>;
 
