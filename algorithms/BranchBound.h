@@ -29,17 +29,10 @@ public:
     std::atomic_bool isRunning;
 
 
-
-
 private:
     // matrix that contains data
     std::vector<std::vector<int>> dataMatrix;
 
-
-
-
-
-    // priority queue using vector as container
     // queue can either be a priority queue for best first or Stack for DFS
     T queue;
     unsigned long numberOfCities;

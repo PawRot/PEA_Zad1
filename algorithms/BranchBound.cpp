@@ -128,6 +128,7 @@ void BranchBound<T>::calculateRootBound(Node &node) {
 
 }
 
+// template is limited to using stack or priority queue
 template class BranchBound<std::stack<Node>>;
 template class BranchBound<std::priority_queue<Node, std::vector<Node>, compareNodes>>;
 
