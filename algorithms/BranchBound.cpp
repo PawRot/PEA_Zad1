@@ -10,7 +10,7 @@ template<typename T>
 BranchBound<T>::~BranchBound() = default;
 
 template<typename T>
-std::tuple<int, std::vector<int>, long long> BranchBound<T>::branchBoundAlgorithm() {
+std::tuple<int, std::vector<int>, std::chrono::duration<float>> BranchBound<T>::branchBoundAlgorithm() {
 
 
     auto start = std::chrono::steady_clock::now();
@@ -63,8 +63,8 @@ std::tuple<int, std::vector<int>, long long> BranchBound<T>::branchBoundAlgorith
         }
     }
     auto end = std::chrono::steady_clock::now();
-    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
-    return {bestBound, bestPathIndexes, duration};
+    auto executionTime = end - start;
+    return {bestBound, bestPathIndexes, executionTime};
 }
 
 template<typename T>

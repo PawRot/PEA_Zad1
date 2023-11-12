@@ -216,7 +216,7 @@ void startBruteForce(vector<vector<int>> &testData) {
     }
     try {
         auto resultTuple = promise.get();
-        auto duration = std::get<2>(resultTuple);
+        auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(std::get<2>(resultTuple)).count();
         std::cout << "Algorithm finished" << std::endl;
         std::cout << "Result: " << std::endl;
         std::cout << "Path length: " << std::get<0>(resultTuple) << std::endl;
@@ -239,10 +239,33 @@ void startBruteForce(vector<vector<int>> &testData) {
 }
 
 void startBranchBound(vector<vector<int>> &testData) {
+    std::cout << R"(Enter "1" for best first or "2" for DFS: )";
+    int choice;
+    string input;
+    std::cin >> input;
+
+    try {
+        choice = std::stoi(input);
+    } catch (std::invalid_argument &e) {
+        std::cout << "Invalid argument" << std::endl;
+        return;
+    }
+
     std::cout << "Starting Branch and Bound algorithm" << std::endl;
-//    BranchBound<std::stack<Node>> branchBound(testData);
-    BranchBound<std::priority_queue<Node, std::vector<Node>, compareNodes>> branchBound(testData);
-    auto resultTuple = branchBound.branchBoundAlgorithm(); //synchroniczne wykonanie
+
+    std::tuple<int, std::vector<int>, std::chrono::duration<float>> resultTuple;
+    if (choice == 1){
+        BranchBound<std::priority_queue<Node, std::vector<Node>, compareNodes>> branchBound(testData);
+        resultTuple = branchBound.branchBoundAlgorithm(); //synchroniczne wykonanie
+    } else if (choice == 2){
+        BranchBound<std::stack<Node>> branchBound(testData);
+        resultTuple = branchBound.branchBoundAlgorithm(); //synchroniczne wykonanie
+    } else {
+        std::cout << "Invalid argument" << std::endl;
+        return;
+    }
+
+
 
     std::cout << "Result: " << std::endl;
     std::cout << "Path length: " << std::get<0>(resultTuple) << std::endl;
@@ -254,6 +277,7 @@ void startBranchBound(vector<vector<int>> &testData) {
         }
     }
     std::cout << std::endl;
-    std::cout << "Execution time was: " << std::get<2>(resultTuple) << " miliseconds" << std::endl;
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(std::get<2>(resultTuple)).count();
+    std::cout << "Execution time was: " << duration << " miliseconds" << std::endl;
 
 }

@@ -23,7 +23,7 @@ public:
 
     ~BranchBound();
 
-    std::tuple<int, std::vector<int>, long long> branchBoundAlgorithm();
+    std::tuple<int, std::vector<int>, std::chrono::duration<float>> branchBoundAlgorithm();
 
     // atomic boolean for testing max N for set execution time
     std::atomic_bool isRunning;

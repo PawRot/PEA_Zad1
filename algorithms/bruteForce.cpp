@@ -15,7 +15,7 @@ bruteForce::bruteForce(const vector<vector<int>> &matrix) {
 bruteForce::~bruteForce() = default;
 
 
-std::tuple<int, vector<int>, long long>
+std::tuple<int, vector<int>, std::chrono::duration<float>>
 bruteForce::bruteForceAlgorithm() {
     auto start = std::chrono::steady_clock::now();
     do {
@@ -45,7 +45,7 @@ bruteForce::bruteForceAlgorithm() {
     // jest zawsze na początku i końcu najlepszej ścieżki (nie musielibyśmy uwzględniać go w permutacjach)
     auto end = std::chrono::steady_clock::now();
 
-    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
-    return {bestPath, bestPathIndexes, duration};
+    auto executionTime = end - start;
+    return {bestPath, bestPathIndexes, executionTime};
 }
 
