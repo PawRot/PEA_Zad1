@@ -57,6 +57,12 @@ std::tuple<int, std::vector<int>, std::chrono::duration<float>> BranchBound<T>::
                         if (childNode.lowerBound < bestBound) {
                             queue.push(childNode);
                         }
+
+                        #ifdef testEnable // if testEnable is defined, this code will be compiled
+                        if (!isRunning) {
+                            throw std::runtime_error("Algorithm stopped");
+                        }
+                        #endif
                     }
                 }
             }
@@ -130,5 +136,6 @@ void BranchBound<T>::calculateRootBound(Node &node) {
 
 // template is limited to using stack or priority queue
 template class BranchBound<std::stack<Node>>;
-template class BranchBound<std::priority_queue<Node, std::vector<Node>, compareNodes>>;
+//template class BranchBound<std::priority_queue<Node, std::vector<Node>, compareNodes>>;
+template class BranchBound<nodePriorityQueue>;
 

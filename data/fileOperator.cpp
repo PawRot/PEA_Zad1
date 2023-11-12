@@ -74,6 +74,29 @@ vector<vector<int>> fileOperator::loadDataFromFile(const string &path) {
     return {};
 }
 
-void fileOperator::saveResultFile(const string &path) {
+void fileOperator::saveResultFile(const string &path, const vector<long long> &data) {
+    std::ofstream file;
+    file.open(path, std::ios::app);
+    if (file.good()) {
+        cout << "File opened successfully" << endl;
+    } else {
+        cout << "File not found" << endl;
+    }
+
+    if (file.is_open()) {
+        int size = static_cast<int>(data.size());
+        int k = 0;
+        for (long long int i : data) {
+            file  << i;
+            if (k < size - 1) {
+                file << ",";
+            }
+            k++;
+        }
+        file << endl;
+        file.close();
+    } else {
+        cout << "File error - OPEN" << endl;
+    }
 
 }

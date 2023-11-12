@@ -7,6 +7,7 @@
 #include "../data/dataGenerator.h"
 #include "../algorithms/bruteForce.h"
 #include "../algorithms/BranchBound.h"
+#include "../tests/tester.h"
 using std::vector, std::string;
 
 void showMenuOptions();
@@ -21,8 +22,22 @@ void startBruteForce(vector<vector<int>> &testData);
 
 void startBranchBound(vector<vector<int>> &testData);
 
-int main() {
-    // punkt wejścia do programu
+
+int main(int argc, char **argv) {
+    if (true || argc > 1 && std::string(argv[1]) == "testMode"){ // enter test mode
+
+        if (true || std::string(argv[2]) == "maxN"){
+//            tester::maxProblemSizeBruteForce(5);
+            tester::maxProblemSizeBranchBound<std::stack<Node>>(1, "DFS");
+            tester::maxProblemSizeBranchBound<nodePriorityQueue>(1, "BestFirst");
+        }
+
+
+        exit(0);
+    }
+
+
+    // normal execution entry point
     int choice = -1;
     string input;
     bool dataLoaded = false;
@@ -139,6 +154,12 @@ vector<vector<int>> generateData(bool &dataLoaded) {
         return {};
     }
 
+    if (numberOfCities < 2){
+        std::cout << "Number of cities must be greater than 1" << std::endl;
+        dataLoaded = false;
+        return {};
+    }
+
     std::cout << "Enter minimum distance between cities: ";
     unsigned int minimumDistance;
     std::cin >> input;
@@ -209,7 +230,7 @@ void startBruteForce(vector<vector<int>> &testData) {
 //    } while (status != std::future_status::ready);
     }
 
-    std::chrono::seconds span(5);
+    std::chrono::seconds span(500000);
     if (promise.wait_for(span) == std::future_status::timeout) {
         std::cout << "Algorithm is still running" << std::endl;
         bruteForce.isRunning = false;
@@ -255,7 +276,7 @@ void startBranchBound(vector<vector<int>> &testData) {
 
     std::tuple<int, std::vector<int>, std::chrono::duration<float>> resultTuple;
     if (choice == 1){
-        BranchBound<std::priority_queue<Node, std::vector<Node>, compareNodes>> branchBound(testData);
+        BranchBound<nodePriorityQueue> branchBound(testData);
         resultTuple = branchBound.branchBoundAlgorithm(); //synchroniczne wykonanie
     } else if (choice == 2){
         BranchBound<std::stack<Node>> branchBound(testData);

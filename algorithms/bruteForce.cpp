@@ -34,7 +34,7 @@ bruteForce::bruteForceAlgorithm() {
             bestPathIndexes = citiesIndexes;
             bestPathIndexes.push_back(0);
         }
-#ifdef testEnable
+#ifdef testEnable // if testEnable is defined, this code will be compiled
         if (!isRunning) {
             throw std::runtime_error("Algorithm stopped");
         }

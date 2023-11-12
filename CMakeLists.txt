@@ -19,6 +19,8 @@ add_executable(PEA_Zad1 menu/main.cpp
         algorithms/BranchBound.cpp
         algorithms/BranchBound.h
         algorithms/BranchBoundNode.h
+        tests/tester.cpp
+        tests/tester.h
 )
 
 if (testMode)

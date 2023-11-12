@@ -6,6 +6,7 @@
 #define PEA_ZAD1_BRANCHBOUNDNODE_H
 
 #include <vector>
+#include <queue>
 
 // node struct
 struct Node {
@@ -19,5 +20,8 @@ struct compareNodes {
         return node1.lowerBound > node2.lowerBound;
     }
 };
+
+typedef std::priority_queue<Node, std::vector<Node>, compareNodes> nodePriorityQueue;
+
 
 #endif //PEA_ZAD1_BRANCHBOUNDNODE_H
