@@ -36,12 +36,11 @@ void tester::maxProblemSizeBruteForce(const int &maxTimeSeconds) {
         } catch (std::runtime_error &e) {
         }
 
-        std::cout << failedTries << std::endl;
         if (success) {
             N++;
             success = false;
             failedTries = 0;
-        } else if (failedTries >= 3) {
+        } else if (failedTries >= 1) {
             std::vector<long long> result;
             result.push_back(N - 1);
             fileOperator::saveResultFile("bruteForceMaxN.csv", result);
@@ -50,43 +49,30 @@ void tester::maxProblemSizeBruteForce(const int &maxTimeSeconds) {
     }
 }
 
+
+
 template<typename T>
 void tester::maxProblemSizeBranchBound(const int &maxTimeSeconds, const std::string &type) {
 
     std::vector<long long> result;
     int failedTries = 0;
     bool success = false;
+    std::tuple<bool, int> resultTuple;
     int N = 10;
 
     while (true) {
 
-        auto testData = dataGenerator::generateTestData(N, 10, 9999);
+        auto testData = dataGenerator::generateTestData(N, 9999, 10);
 
-        BranchBound<T> branchBound(testData);
-
-        auto promise = std::async(std::launch::async, &BranchBound<T>::branchBoundAlgorithm, &branchBound);
-
-        std::chrono::seconds span(maxTimeSeconds);
-        if (promise.wait_for(span) == std::future_status::timeout) {
-            std::cout << "Algorithm exceeded set time" << std::endl;
-            branchBound.isRunning = false;
-            failedTries++;
-        }
-        try {
-            auto resultTuple = promise.get();
-            auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(std::get<2>(resultTuple)).count();
-            std::cout << "Algorithm finished in " << duration << " nanoseconds" << std::endl;
-            result.push_back(duration);
-            success = true;
-        } catch (std::runtime_error &e) {
-        }
+        resultTuple = runBranchBound<T>(testData, maxTimeSeconds, result, failedTries);
 
 
-        if (success) {
+
+        if (std::get<0>(resultTuple)) {
             N++;
-            success = false;
+//            success = false;
             failedTries = 0;
-        } else if (failedTries >= 1) {
+        } else if (std::get<1>(resultTuple) >= 3) {
             result.insert(result.begin(), N - 1);
             if (type == "DFS")
                 fileOperator::saveResultFile("BBDFSMaxN.csv", result);
@@ -94,6 +80,36 @@ void tester::maxProblemSizeBranchBound(const int &maxTimeSeconds, const std::str
                 fileOperator::saveResultFile("BBBestFirstMaxN.csv", result);
             return;
         }
+    }
+}
+
+template<typename T>
+std::tuple<bool, int> tester::runBranchBound(const std::vector<std::vector<int>> &testData, const int &maxTimeSeconds, std::vector<long long> &result, int &failedTries) {
+    bool failed = false;
+    BranchBound<T> branchBound(testData);
+
+    auto promise = std::async(std::launch::async, &BranchBound<T>::branchBoundAlgorithm, &branchBound);
+
+    std::chrono::seconds span(maxTimeSeconds);
+    if (promise.wait_for(span) == std::future_status::timeout) {
+        std::cout << "Algorithm exceeded set time" << std::endl;
+        branchBound.isRunning = false;
+        failed = true;
+        failedTries++;
+        return {false, failedTries};
+    }
+    try {
+        auto resultTuple = promise.get();
+        auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(std::get<2>(resultTuple)).count();
+//        if (!failed) {
+            std::cout << "Algorithm finished in " << duration << " milliseconds" << std::endl;
+            result.push_back(duration);
+            return {true, failedTries};
+//        }
+//        return {false, failedTries};
+    } catch (std::runtime_error &e) {
+        std::cout << "Algorithm execution time was too long, terminated" << std::endl;
+        return {false, failedTries};
     }
 }
 

@@ -27,9 +27,9 @@ int main(int argc, char **argv) {
     if (true || argc > 1 && std::string(argv[1]) == "testMode"){ // enter test mode
 
         if (true || std::string(argv[2]) == "maxN"){
-//            tester::maxProblemSizeBruteForce(5);
-            tester::maxProblemSizeBranchBound<std::stack<Node>>(1, "DFS");
-            tester::maxProblemSizeBranchBound<nodePriorityQueue>(1, "BestFirst");
+            tester::maxProblemSizeBruteForce(5);
+            tester::maxProblemSizeBranchBound<std::stack<Node>>(5, "DFS");
+            tester::maxProblemSizeBranchBound<nodePriorityQueue>(5, "BestFirst");
         }
 
 

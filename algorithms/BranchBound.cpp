@@ -60,8 +60,14 @@ std::tuple<int, std::vector<int>, std::chrono::duration<float>> BranchBound<T>::
 
                         #ifdef testEnable // if testEnable is defined, this code will be compiled
                         if (!isRunning) {
+                            std::cout << "Algorithm stopped" << std::endl;
                             throw std::runtime_error("Algorithm stopped");
                         }
+
+//                        if (std::chrono::duration_cast<std::chrono::seconds>(std::chrono::steady_clock::now() - start).count() > 5) {
+//                            std::cout << "Algorithm stopped" << std::endl;
+//                            throw std::runtime_error("Algorithm exceeded set time");
+//                        }
                         #endif
                     }
                 }
