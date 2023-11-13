@@ -26,6 +26,7 @@ public:
     template<typename T>
     static void maxProblemSizeBranchBound(const int& maxTimeSeconds, const std::string &type);
 
+private:
     template<typename T>
     static std::tuple<bool, int> runBranchBound(const std::vector<std::vector<int>> &testData, const int &maxTimeSeconds, std::vector<long long> &result, int &failedTries);
 

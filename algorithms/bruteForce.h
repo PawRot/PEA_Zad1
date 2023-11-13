@@ -5,7 +5,8 @@
 #include <algorithm>
 #include <vector>
 #include <numeric>
-
+#include <atomic>
+#include <chrono>
 
 
 class bruteForce {

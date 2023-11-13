@@ -10,7 +10,7 @@ tester::~tester() = default;
 
 void tester::maxProblemSizeBruteForce(const int &maxTimeSeconds) {
 
-    int tries = 0, failedTries = 0;
+    int failedTries = 0;
     bool success = false;
     int N = 2;
 
@@ -30,8 +30,8 @@ void tester::maxProblemSizeBruteForce(const int &maxTimeSeconds) {
         }
         try {
             auto resultTuple = promise.get();
-            auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(std::get<2>(resultTuple)).count();
-            std::cout << "Algorithm finished in " << duration << "milliseconds" << std::endl;
+            auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(std::get<2>(resultTuple)).count();
+            std::cout << "Algorithm finished in " << duration << "nanoseconds" << std::endl;
             success = true;
         } catch (std::runtime_error &e) {
         }
@@ -56,7 +56,6 @@ void tester::maxProblemSizeBranchBound(const int &maxTimeSeconds, const std::str
 
     std::vector<long long> result;
     int failedTries = 0;
-    bool success = false;
     std::tuple<bool, int> resultTuple;
     int N = 10;
 
@@ -85,7 +84,6 @@ void tester::maxProblemSizeBranchBound(const int &maxTimeSeconds, const std::str
 
 template<typename T>
 std::tuple<bool, int> tester::runBranchBound(const std::vector<std::vector<int>> &testData, const int &maxTimeSeconds, std::vector<long long> &result, int &failedTries) {
-    bool failed = false;
     BranchBound<T> branchBound(testData);
 
     auto promise = std::async(std::launch::async, &BranchBound<T>::branchBoundAlgorithm, &branchBound);
@@ -94,15 +92,14 @@ std::tuple<bool, int> tester::runBranchBound(const std::vector<std::vector<int>>
     if (promise.wait_for(span) == std::future_status::timeout) {
         std::cout << "Algorithm exceeded set time" << std::endl;
         branchBound.isRunning = false;
-        failed = true;
         failedTries++;
         return {false, failedTries};
     }
     try {
         auto resultTuple = promise.get();
-        auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(std::get<2>(resultTuple)).count();
+        auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(std::get<2>(resultTuple)).count();
 //        if (!failed) {
-            std::cout << "Algorithm finished in " << duration << " milliseconds" << std::endl;
+            std::cout << "Algorithm finished in " << duration << " nanoseconds" << std::endl;
             result.push_back(duration);
             return {true, failedTries};
 //        }
