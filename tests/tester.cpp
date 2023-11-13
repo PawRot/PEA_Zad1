@@ -1,6 +1,3 @@
-//
-// Created by Michał Zychowicz on 12/11/2023.
-//
 
 #include "tester.h"
 
@@ -50,6 +47,37 @@ void tester::maxProblemSizeBruteForce(const int &maxTimeSeconds) {
     }
 }
 
+void tester::testBruteForce(const int &N) {
+
+    std::vector<long long> result;
+    int tests = 0;
+
+    while (tests < 100) {
+
+        auto testData = dataGenerator::generateTestData(N, 10, 9999);
+
+        bruteForce bruteForce(testData);
+
+        auto resultTuple = bruteForce.bruteForceAlgorithm();
+
+        auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(std::get<2>(resultTuple)).count();
+        std::cout << "Algorithm finished in " << duration << " nanoseconds" << std::endl;
+        result.push_back(duration);
+
+        tests++;
+    }
+
+    auto const size = static_cast<int>(result.size());
+    auto const average = std::reduce(result.begin(), result.end()) / size;
+    std::vector<long long> endResult = {N, average};
+
+//    result.insert(result.begin(), N);
+//    std::string fileName = "bruteForce" + std::to_string(N) + ".csv";
+    std::string fileName = "bruteForceTest.csv";
+    fileOperator::saveResultFile(fileName, endResult);
+
+}
+
 
 
 template<typename T>
@@ -84,6 +112,38 @@ void tester::maxProblemSizeBranchBound(const int &maxTimeSeconds, const std::str
 }
 
 template<typename T>
+void tester::testBranchBound(const int &N, const int &maxTimeSeconds,  const std::string &type) {
+
+    std::vector<long long> result;
+    int failedTries = 0;
+    std::tuple<bool, int> resultTuple;
+    int tests = 0;
+
+    while(tests < 100) {
+
+        auto testData = dataGenerator::generateTestData(N, 9999, 10);
+
+        resultTuple = runBranchBound<T>(testData, maxTimeSeconds, result, failedTries);
+
+        tests++;
+
+    }
+
+    auto const size = static_cast<int>(result.size());
+    auto const average = std::reduce(result.begin(), result.end()) / size;
+    std::vector<long long> endResult = {N, failedTries, average};
+
+    if (type == "DFS") {
+        std::string fileName = "BBDFSTest.csv";
+        fileOperator::saveResultFile(fileName, endResult);
+    } else if (type == "BestFirst") {
+        std::string fileName = "BBBestFirstTest.csv";
+        fileOperator::saveResultFile(fileName, endResult);
+    }
+
+}
+
+template<typename T>
 std::tuple<bool, int> tester::runBranchBound(const std::vector<std::vector<int>> &testData, const int &maxTimeSeconds, std::vector<long long> &result, int &failedTries) {
     BranchBound<T> branchBound(testData);
 
@@ -114,4 +174,7 @@ std::tuple<bool, int> tester::runBranchBound(const std::vector<std::vector<int>>
 template void tester::maxProblemSizeBranchBound<std::stack<Node>>(const int& maxTimeSeconds, const std::string &type);
 
 template void tester::maxProblemSizeBranchBound<nodePriorityQueue>(const int& maxTimeSeconds, const std::string &type);
+
+template void tester::testBranchBound<std::stack<Node>>(const int &N, const int &maxTimeSeconds, const std::string &type);
+template void tester::testBranchBound<nodePriorityQueue>(const int &N, const int &maxTimeSeconds,  const std::string &type);
 

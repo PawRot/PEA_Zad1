@@ -27,9 +27,31 @@ int main(int argc, char **argv) {
     if (argc > 1 && std::string(argv[1]) == "testMode"){ // enter test mode
 
         if (std::string(argv[2]) == "maxN"){ // will only work on exe compiled with testEnable flag
-            tester::maxProblemSizeBruteForce(420);
+            tester::maxProblemSizeBruteForce(420); // 420 seconds = 7 minutes
             tester::maxProblemSizeBranchBound<std::stack<Node>>(420, "DFS");
             tester::maxProblemSizeBranchBound<nodePriorityQueue>(420, "BestFirst");
+        }
+
+        if(std::string(argv[2]) == "timeMeasure"){
+            static std::vector<int> BFN(11);
+            std::iota(BFN.begin(), BFN.end(), 5);
+
+            static std::vector<int> BBN(13);
+            std::iota(BBN.begin(), BBN.end(), 9);
+
+            for (auto &N : BFN) {
+                tester::testBruteForce(N);
+            }
+
+            // 540 seconds = 9 minutes
+            for (auto &N : BBN){
+                tester::testBranchBound<std::stack<Node>>(N, 540, "DFS");
+            }
+
+            for (auto &N : BBN) {
+                tester::testBranchBound<nodePriorityQueue>(N, 540, "BestFirst");
+            }
+
         }
 
 

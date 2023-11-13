@@ -1,6 +1,3 @@
-//
-// Created by Michał Zychowicz on 12/11/2023.
-//
 
 #ifndef PEA_ZAD1_TESTER_H
 #define PEA_ZAD1_TESTER_H
@@ -25,6 +22,12 @@ public:
 
     template<typename T>
     static void maxProblemSizeBranchBound(const int& maxTimeSeconds, const std::string &type);
+
+    static void testBruteForce(const int &N);
+
+    template<typename T>
+    static void testBranchBound(const int &N, const int& maxTimeSeconds, const std::string &type);
+
 
 private:
     template<typename T>
