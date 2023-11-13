@@ -27,9 +27,9 @@ int main(int argc, char **argv) {
     if (argc > 1 && std::string(argv[1]) == "testMode"){ // enter test mode
 
         if (std::string(argv[2]) == "maxN"){ // will only work on exe compiled with testEnable flag
-            tester::maxProblemSizeBruteForce(300);
-            tester::maxProblemSizeBranchBound<std::stack<Node>>(300, "DFS");
-            tester::maxProblemSizeBranchBound<nodePriorityQueue>(300, "BestFirst");
+            tester::maxProblemSizeBruteForce(420);
+            tester::maxProblemSizeBranchBound<std::stack<Node>>(420, "DFS");
+            tester::maxProblemSizeBranchBound<nodePriorityQueue>(420, "BestFirst");
         }
 
 
