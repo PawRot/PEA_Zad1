@@ -10,6 +10,7 @@ tester::~tester() = default;
 
 void tester::maxProblemSizeBruteForce(const int &maxTimeSeconds) {
 
+    std::vector<long long> result;
     int failedTries = 0;
     bool success = false;
     int N = 2;
@@ -32,6 +33,7 @@ void tester::maxProblemSizeBruteForce(const int &maxTimeSeconds) {
             auto resultTuple = promise.get();
             auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(std::get<2>(resultTuple)).count();
             std::cout << "Algorithm finished in " << duration << "nanoseconds" << std::endl;
+            result.push_back(duration);
             success = true;
         } catch (std::runtime_error &e) {
         }
@@ -41,8 +43,7 @@ void tester::maxProblemSizeBruteForce(const int &maxTimeSeconds) {
             success = false;
             failedTries = 0;
         } else if (failedTries >= 1) {
-            std::vector<long long> result;
-            result.push_back(N - 1);
+            result.insert(result.begin(), N - 1);
             fileOperator::saveResultFile("bruteForceMaxN.csv", result);
             return;
         }
@@ -57,7 +58,7 @@ void tester::maxProblemSizeBranchBound(const int &maxTimeSeconds, const std::str
     std::vector<long long> result;
     int failedTries = 0;
     std::tuple<bool, int> resultTuple;
-    int N = 10;
+    int N = 2;
 
     while (true) {
 
