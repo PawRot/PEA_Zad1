@@ -16,7 +16,7 @@ struct Node {
 
 // custom compare
 struct compareNodes {
-    bool operator()(const Node &node1, const Node &node2) {
+    bool operator()(const Node &node1, const Node &node2) const {
         return node1.lowerBound > node2.lowerBound;
     }
 };

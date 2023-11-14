@@ -19,7 +19,7 @@ void fileOperator::saveDataFile(const string &path, const vector<vector<int>> &d
     }
 
     if(file.is_open()) {
-        int size = static_cast<int>(data.size());
+        const int size = static_cast<int>(data.size());
         file << size << std::endl;
         for (int i = 0; i < size; ++i){
             for (int j = 0; j < size; ++j){
@@ -41,17 +41,16 @@ vector<vector<int>> fileOperator::loadDataFromFile(const string &path) {
         cout << "File not found" << endl;
     }
 
-    int numberOfCities;
-
     if (file.is_open()) {
+        int numberOfCities;
         file >> numberOfCities;
 
-        int distance;
-        vector<vector<int>> tab(numberOfCities, vector<int>(numberOfCities));
+        vector tab(numberOfCities, vector<int>(numberOfCities));
 
         if (file.fail()) {
             cout << "File error" << endl;
         } else {
+            int distance;
             for (int i = 0; i < numberOfCities; i++) {
                 for (int j = 0; j < numberOfCities; j++) {
                     file >> distance;
@@ -84,9 +83,9 @@ void fileOperator::saveResultFile(const string &path, const vector<long long> &d
     }
 
     if (file.is_open()) {
-        int size = static_cast<int>(data.size());
+        const int size = static_cast<int>(data.size());
         int k = 0;
-        for (long long int i : data) {
+        for (const long long int i : data) {
             file  << i;
             if (k < size - 1) {
                 file << ",";

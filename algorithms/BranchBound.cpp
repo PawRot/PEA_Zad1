@@ -14,7 +14,7 @@ template<typename T>
 std::tuple<int, std::vector<int>, std::chrono::duration<float>> BranchBound<T>::branchBoundAlgorithm() {
 
 
-    auto start = std::chrono::steady_clock::now();
+    const auto start = std::chrono::steady_clock::now();
 
 
 
@@ -75,13 +75,13 @@ std::tuple<int, std::vector<int>, std::chrono::duration<float>> BranchBound<T>::
             }
         }
     }
-    auto end = std::chrono::steady_clock::now();
+    const auto end = std::chrono::steady_clock::now();
     auto executionTime = end - start;
     return {bestBound, bestPathIndexes, executionTime};
 }
 
 template<typename T>
-void BranchBound<T>::calculateLowerBound(Node &node) {
+void BranchBound<T>::calculateLowerBound(Node &node) const {
     int lowerBound = 0;
     // find the lowerBound for partial path
     // calculate value of cities in current path
@@ -112,7 +112,7 @@ void BranchBound<T>::calculateLowerBound(Node &node) {
 }
 
 template<typename T>
-void BranchBound<T>::calculateLeafBound(Node &node) {
+void BranchBound<T>::calculateLeafBound(Node &node) const {
     // calculate distance between all cities in path
     int lowerBound = 0;
     for (int i = 0; i < node.path.size() - 1; ++i) {
@@ -122,7 +122,7 @@ void BranchBound<T>::calculateLeafBound(Node &node) {
 }
 
 template<typename T>
-void BranchBound<T>::calculateRootBound(Node &node) {
+void BranchBound<T>::calculateRootBound(Node &node) const {
     // calculate lower bound of root node
     int lowerBound = 0;
     // find minimum value in each row and add it to lowerBound

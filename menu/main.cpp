@@ -16,14 +16,14 @@ vector<vector<int>> loadFromFile(bool &dataLoaded);
 
 vector<vector<int>> generateData(bool &dataLoaded);
 
-void displayCurrentData(vector<vector<int>> &data);
+void displayCurrentData(const vector<vector<int>> &data);
 
-void startBruteForce(vector<vector<int>> &testData);
+void startBruteForce(const vector<vector<int>> &testData);
 
-void startBranchBound(vector<vector<int>> &testData);
+void startBranchBound(const vector<vector<int>> &testData);
 
 
-int main(int argc, char **argv) {
+int main(const int argc, char **argv) {
     if (argc > 1 && std::string(argv[1]) == "testMode"){ // enter test mode
 
         if (std::string(argv[2]) == "maxN"){ // will only work on exe compiled with testEnable flag
@@ -150,8 +150,7 @@ vector<vector<int>> loadFromFile(bool &dataLoaded) {
     std::cin >> filePath;
 
     std::cout << "Loading data from file: " << filePath << std::endl;
-    auto data = fileOperator::loadDataFromFile(filePath);
-    if (!data.empty()) {
+    if (auto data = fileOperator::loadDataFromFile(filePath); !data.empty()) {
         std::cout << "Data loaded successfully" << std::endl;
         dataLoaded = true;
         return data;
@@ -206,8 +205,7 @@ vector<vector<int>> generateData(bool &dataLoaded) {
         return {};
     }
     std::cout << "Generating test data" << std::endl;
-    auto data = dataGenerator::generateTestData(numberOfCities, maximumDistance, minimumDistance);
-    if (!data.empty()) {
+    if (auto data = dataGenerator::generateTestData(numberOfCities, maximumDistance, minimumDistance); !data.empty()) {
         std::cout << "Data generated successfully" << std::endl;
         dataLoaded = true;
         return data;
@@ -219,8 +217,8 @@ vector<vector<int>> generateData(bool &dataLoaded) {
 
 }
 
-void displayCurrentData(vector<vector<int>> &data) {
-    int numberOfCities = static_cast<int>(data.size());
+void displayCurrentData(const vector<vector<int>> &data) {
+    const int numberOfCities = static_cast<int>(data.size());
     std::cout << "Current number of cities: " << numberOfCities << std::endl;
     std::cout << "Current test data matrix: " << std::endl;
     for (int i = 0; i < numberOfCities; ++i) {
@@ -232,7 +230,7 @@ void displayCurrentData(vector<vector<int>> &data) {
 
 }
 
-void startBruteForce(vector<vector<int>> &testData) {
+void startBruteForce(const vector<vector<int>> &testData) {
     std::cout << "Starting Brute Force algorithm" << std::endl;
     bruteForce bruteForce(testData);
 
@@ -252,14 +250,13 @@ void startBruteForce(vector<vector<int>> &testData) {
 //    } while (status != std::future_status::ready);
     }
 
-    std::chrono::seconds span(500000);
-    if (promise.wait_for(span) == std::future_status::timeout) {
+    if (constexpr std::chrono::seconds span(500000); promise.wait_for(span) == std::future_status::timeout) {
         std::cout << "Algorithm is still running" << std::endl;
         bruteForce.isRunning = false;
     }
     try {
-        auto resultTuple = promise.get();
-        auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(std::get<2>(resultTuple)).count();
+        const auto resultTuple = promise.get();
+        const auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(std::get<2>(resultTuple)).count();
         std::cout << "Algorithm finished" << std::endl;
         std::cout << "Result: " << std::endl;
         std::cout << "Path length: " << std::get<0>(resultTuple) << std::endl;
@@ -275,13 +272,12 @@ void startBruteForce(vector<vector<int>> &testData) {
     } catch (std::runtime_error &e) {
         std::cout << e.what() << std::endl;
         std::cout << "Algorithm execution time was too long, terminated" << std::endl;
-        return;
     }
 
 
 }
 
-void startBranchBound(vector<vector<int>> &testData) {
+void startBranchBound(const vector<vector<int>> &testData) {
     std::cout << R"(Enter "1" for best first or "2" for DFS: )";
     int choice;
     string input;
@@ -320,7 +316,7 @@ void startBranchBound(vector<vector<int>> &testData) {
         }
     }
     std::cout << std::endl;
-    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(std::get<2>(resultTuple)).count();
+    const auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(std::get<2>(resultTuple)).count();
     std::cout << "Execution time was: " << duration << " miliseconds" << std::endl;
 
 }

@@ -20,8 +20,7 @@ void tester::maxProblemSizeBruteForce(const int &maxTimeSeconds) {
 
         auto promise = std::async(std::launch::async, &bruteForce::bruteForceAlgorithm, &bruteForce);
 
-        std::chrono::seconds span(maxTimeSeconds);
-        if (promise.wait_for(span) == std::future_status::timeout) {
+        if (std::chrono::seconds span(maxTimeSeconds); promise.wait_for(span) == std::future_status::timeout) {
             std::cout << "Algorithm exceeded set time" << std::endl;
             bruteForce.isRunning = false;
             failedTries++;
@@ -69,11 +68,11 @@ void tester::testBruteForce(const int &N) {
 
     auto const size = static_cast<int>(result.size());
     auto const average = std::reduce(result.begin(), result.end()) / size;
-    std::vector<long long> endResult = {N, average};
+    const std::vector endResult = {N, average};
 
 //    result.insert(result.begin(), N);
 //    std::string fileName = "bruteForce" + std::to_string(N) + ".csv";
-    std::string fileName = "bruteForceTest.csv";
+    const std::string fileName = "bruteForceTest.csv";
     fileOperator::saveResultFile(fileName, endResult);
 
 }
@@ -131,13 +130,13 @@ void tester::testBranchBound(const int &N, const int &maxTimeSeconds,  const std
 
     auto const size = static_cast<int>(result.size());
     auto const average = std::reduce(result.begin(), result.end()) / size;
-    std::vector<long long> endResult = {N, failedTries, average};
+    const std::vector<long long> endResult = {N, failedTries, average};
 
     if (type == "DFS") {
-        std::string fileName = "BBDFSTest.csv";
+        const std::string fileName = "BBDFSTest.csv";
         fileOperator::saveResultFile(fileName, endResult);
     } else if (type == "BestFirst") {
-        std::string fileName = "BBBestFirstTest.csv";
+        const std::string fileName = "BBBestFirstTest.csv";
         fileOperator::saveResultFile(fileName, endResult);
     }
 
@@ -149,8 +148,7 @@ std::tuple<bool, int> tester::runBranchBound(const std::vector<std::vector<int>>
 
     auto promise = std::async(std::launch::async, &BranchBound<T>::branchBoundAlgorithm, &branchBound);
 
-    std::chrono::seconds span(maxTimeSeconds);
-    if (promise.wait_for(span) == std::future_status::timeout) {
+    if (std::chrono::seconds span(maxTimeSeconds); promise.wait_for(span) == std::future_status::timeout) {
         std::cout << "Algorithm exceeded set time" << std::endl;
         branchBound.isRunning = false;
         failedTries++;
