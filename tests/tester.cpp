@@ -123,15 +123,22 @@ void tester::testBranchBound(const int &N, const int &maxTimeSeconds,  const std
 
         auto testData = dataGenerator::generateTestData(N, 9999, 10);
 
-        resultTuple = runBranchBound<T>(testData, maxTimeSeconds, result, failedTries);
+        runBranchBound<T>(testData, maxTimeSeconds, result, failedTries);
 
         tests++;
 
     }
 
     auto const size = static_cast<int>(result.size());
-    auto const average = std::reduce(result.begin(), result.end()) / size;
-    std::vector<long long> endResult = {N, failedTries, average};
+    std::vector<long long> endResult;
+    if (size == 0){
+        endResult = {N, failedTries, -1};
+
+    }else {
+        auto const average = std::reduce(result.begin(), result.end()) / size;
+        endResult = {N, failedTries, average};
+    }
+
 
     if (type == "DFS") {
         std::string fileName = "BBDFSTest.csv";
