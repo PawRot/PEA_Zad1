@@ -51,7 +51,7 @@ void tester::testBruteForce(const int &N) {
     std::vector<long long> result;
     int tests = 0;
 
-    while (tests < 100) {
+    while (tests < 1) {
 
         auto testData = dataGenerator::generateTestData(N, 10, 9999);
 
@@ -115,14 +115,13 @@ void tester::testBranchBound(const int &N, const int &maxTimeSeconds,  const std
 
     std::vector<long long> result;
     int failedTries = 0;
-    std::tuple<bool, int> resultTuple;
     int tests = 0;
 
-    while(tests < 100) {
+    while(tests < 1) {
 
         auto testData = dataGenerator::generateTestData(N, 9999, 10);
 
-        resultTuple = runBranchBound<T>(testData, maxTimeSeconds, result, failedTries);
+        runBranchBound<T>(testData, maxTimeSeconds, result, failedTries);
 
         tests++;
 

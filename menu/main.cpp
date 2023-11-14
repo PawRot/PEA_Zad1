@@ -40,16 +40,19 @@ int main(const int argc, char **argv) {
             std::iota(BBN.begin(), BBN.end(), 9);
 
             for (auto &N : BFN) {
+                std::cout << "Testing brute force for N = " << N << std::endl;
                 tester::testBruteForce(N);
             }
 
             // 540 seconds = 9 minutes
             for (auto &N : BBN){
-                tester::testBranchBound<std::stack<Node>>(N, 540, "DFS");
+                std::cout << "Testing branch and bound DFS for N = " << N << std::endl;
+                tester::testBranchBound<std::stack<Node>>(N, 54, "DFS");
             }
 
             for (auto &N : BBN) {
-                tester::testBranchBound<nodePriorityQueue>(N, 540, "BestFirst");
+                std::cout << "Testing branch and bound Best First for N = " << N << std::endl;
+                tester::testBranchBound<nodePriorityQueue>(N, 54, "BestFirst");
             }
 
         }
