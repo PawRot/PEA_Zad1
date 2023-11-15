@@ -25,6 +25,7 @@ void startBranchBound(vector<vector<int>> &testData);
 
 int main(int argc, char **argv) {
     if (argc > 1 && std::string(argv[1]) == "testMode"){ // enter test mode
+        std::cout << "test mode" << std::endl;
 
         if (std::string(argv[2]) == "maxN"){ // will only work on exe compiled with testEnable flag
             tester::maxProblemSizeBruteForce(420); // 420 seconds = 7 minutes
