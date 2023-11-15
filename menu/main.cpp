@@ -44,7 +44,7 @@ int main(int argc, char **argv) {
                 tester::testBruteForce(N);
             }
 
-            // 540 seconds = 9 minutes
+            // 540 seconds = 9 minutes, time limit will only work on exe compiled with testEnable flag
             for (auto &N : BBN){
                 std::cout << "Testing DFS with N = " << N << std::endl;
                 tester::testBranchBound<std::stack<Node>>(N, 540, "DFS");
