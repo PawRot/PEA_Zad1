@@ -33,27 +33,70 @@ int main(int argc, char **argv) {
         }
 
         if(std::string(argv[2]) == "timeMeasure"){
-            static std::vector<int> BFN(11);
-            std::iota(BFN.begin(), BFN.end(), 5);
+//            static std::vector<int> BFN(11);
+//            std::iota(BFN.begin(), BFN.end(), 5);
+//
+//            static std::vector<int> BBN(13);
+//            std::iota(BBN.begin(), BBN.end(), 9);
+//
+//            for (auto &N : BFN) {
+//                std::cout << "Testing Brute Force with N = " << N << std::endl;
+//                tester::testBruteForce(N);
+//            }
+//
+//            // 540 seconds = 9 minutes
+//            for (auto &N : BBN){
+//                std::cout << "Testing DFS with N = " << N << std::endl;
+//                tester::testBranchBound<std::stack<Node>>(N, 540, "DFS");
+//            }
+//
+//            for (auto &N : BBN) {
+//                std::cout << "Testing BestFirst with N = " << N << std::endl;
+//                tester::testBranchBound<nodePriorityQueue>(N, 540, "BestFirst");
+//            }
 
-            static std::vector<int> BBN(13);
-            std::iota(BBN.begin(), BBN.end(), 9);
-
-            for (auto &N : BFN) {
-                std::cout << "Testing Brute Force with N = " << N << std::endl;
-                tester::testBruteForce(N);
+        std::future<void> future1 = std::async(std::launch::async, [](){
+            static std::vector<int> BBN = {14, 21};
+            for (auto &N : BBN) {
+                tester::testBranchBound<nodePriorityQueue>(N, 540, "BestFirst");
+                std::cout << "Finished testing BestFirst with N  = " << N << std::endl;
             }
+        });
 
-            // 540 seconds = 9 minutes
-            for (auto &N : BBN){
-                std::cout << "Testing DFS with N = " << N << std::endl;
-                tester::testBranchBound<std::stack<Node>>(N, 540, "DFS");
+        std::future<void> future2 = std::async(std::launch::async, [](){
+            static std::vector<int> BBN = {16, 17, 20};
+            for (auto &N : BBN) {
+                tester::testBranchBound<nodePriorityQueue>(N, 540, "BestFirst");
+                std::cout << "Finished testing BestFirst with N  = " << N << std::endl;
             }
+        });
+
+        std::future<void> future3 = std::async(std::launch::async, [](){
+            static std::vector<int> BBN = {15, 18, 19};
+            for (auto &N : BBN) {
+                tester::testBranchBound<nodePriorityQueue>(N, 540, "BestFirst");
+                std::cout << "Finished testing BestFirst with N  = " << N << std::endl;
+            }
+        });
+
+        std::future<void> future4 = std::async(std::launch::async, [](){
+            static std::vector<int> BBN = {9, 10, 11, 12, 13};
 
             for (auto &N : BBN) {
-                std::cout << "Testing BestFirst with N = " << N << std::endl;
                 tester::testBranchBound<nodePriorityQueue>(N, 540, "BestFirst");
+                std::cout << "Finished testing BestFirst with N  = " << N << std::endl;
             }
+
+            tester::testBranchBound<std::stack<Node>>(21, 540,"DFS");
+            std::cout << "Finished testing DFS with N  = " << 21 << std::endl;
+
+        });
+
+        future1.get();
+        future2.get();
+        future3.get();
+        future4.get();
+
 
         }
 

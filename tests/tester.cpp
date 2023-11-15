@@ -119,7 +119,7 @@ void tester::testBranchBound(const int &N, const int &maxTimeSeconds,  const std
     std::tuple<bool, int> resultTuple;
     int tests = 0;
 
-    while(tests < 100) {
+    while(tests < 20) {
 
         auto testData = dataGenerator::generateTestData(N, 9999, 10);
 
@@ -141,10 +141,10 @@ void tester::testBranchBound(const int &N, const int &maxTimeSeconds,  const std
 
 
     if (type == "DFS") {
-        std::string fileName = "BBDFSTest.csv";
+        std::string fileName = "BBDFSTest" + std::to_string(N) + ".csv";
         fileOperator::saveResultFile(fileName, endResult);
     } else if (type == "BestFirst") {
-        std::string fileName = "BBBestFirstTest.csv";
+        std::string fileName = "BBBestFirstTest " + std::to_string(N) + ".csv";
         fileOperator::saveResultFile(fileName, endResult);
     }
 
