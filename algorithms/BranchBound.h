@@ -37,7 +37,7 @@ private:
     T queue;
     unsigned long numberOfCities;
     std::vector<int> bestPathIndexes; // indexes of best path
-    int bestBound; // current best path length
+    int bestBound; // current best path length and upper bound
 
 
     void calculateLowerBound(Node &node);
