@@ -40,11 +40,11 @@ private:
     int bestBound; // current best path length and upper bound
 
 
-    void calculateLowerBound(Node &node);
+    void calculateLowerBound(Node &node) const;
 
-    void calculateLeafBound(Node &node);
+    void calculateLeafBound(Node &node) const;
 
-    void calculateRootBound(Node &node);
+    void calculateRootBound(Node &node) const;
 
 };
 
