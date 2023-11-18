@@ -107,13 +107,12 @@ void BranchBound<T>::calculateLowerBound(Node&node) const {
     for (const auto i: node.notVisited) {
         // if vertex not in path, excluding last element
         row.reserve(numberOfCities);
-        for (auto j: node.notVisited) {
+        for (const auto j: node.notVisited) {
             if (i != j) {
-                if (std::find(node.path.begin() + 1, node.path.end(), j) == node.path.end()) {
-                    row.push_back(dataMatrix[i][j]);
-                }
+                row.push_back(dataMatrix[i][j]);
             }
         }
+        row.push_back(dataMatrix[i][0]);
         lowerBound += *std::ranges::min_element(row);
         row.clear();
     }
