@@ -14,13 +14,18 @@ template<typename T>
 std::tuple<int, std::vector<int>, std::chrono::duration<float>> BranchBound<T>::branchBoundAlgorithm() {
     const auto start = std::chrono::steady_clock::now();
 
+    std::vector<int> citiesIndexes;
+    citiesIndexes.reserve(numberOfCities - 1);
+    for (int i = 1; i < numberOfCities; ++i) {
+        citiesIndexes.push_back(i);
+    }
 
     // Initialize priority queue
     Node root{0, {0}};
     calculateRootBound(root);
 
-    root.notVisited.resize(numberOfCities - 1);
-    std::generate(root.notVisited.begin(), root.notVisited.end(), [n = 1]() mutable { return n++; });
+    // root.notVisited.resize(numberOfCities - 1);
+    // std::generate(root.notVisited.begin(), root.notVisited.end(), [n = 1]() mutable { return n++; });
 
     queue.push(root);
 
@@ -33,19 +38,27 @@ std::tuple<int, std::vector<int>, std::chrono::duration<float>> BranchBound<T>::
 
         // check if node can lead to better solution
         if (node.lowerBound < bestBound) {
-            for (auto i: node.notVisited) {
+            std::list<int> notVisited;
+            notVisited.resize(numberOfCities - node.path.size());
+            std::copy_if(citiesIndexes.begin(), citiesIndexes.end(), std::back_inserter(notVisited),
+                         [&node](const int cityIndex) {
+                             return std::find(node.path.begin(), node.path.end(), cityIndex) == node.path.end();
+                         });
+            for (auto i: notVisited) {
                 // go over cities not in path
 
                 // create child node, copy parent path and push new city to back
                 Node childNode;
                 childNode.path = node.path;
                 childNode.path.push_back(i);
-                childNode.notVisited = node.notVisited;
-                childNode.notVisited.erase(std::ranges::find(childNode.notVisited, i));
+                std::list<int> notVisitedCopy = notVisited;
+                notVisitedCopy.erase(std::ranges::find(notVisitedCopy, i));
+//                childNode.notVisited = node.notVisited;
+//                childNode.notVisited.erase(std::ranges::find(childNode.notVisited, i));
 
 
                 // if all cities all already in path, add starting city to path and calculate leaf bound
-                if (childNode.notVisited.empty()) {
+                if (notVisitedCopy.empty()) {
                     childNode.path.push_back(0);
                     calculateLeafBound(childNode);
                     // if leaf path is lower than bestBound then set bestBound to it and change best path
@@ -94,7 +107,7 @@ void BranchBound<T>::calculateLowerBound(Node&node) const {
     std::vector<int> row;
     row.reserve(numberOfCities);
 
-    for (const auto i: node.notVisited) {
+    for (const auto i: notVisited) {
         row.push_back(dataMatrix[node.path[node.path.size() - 1]][i]);
     }
     lowerBound += *std::ranges::min_element(row);

@@ -13,7 +13,7 @@
 struct Node {
     int lowerBound;
     std::vector<int> path;
-    std::list<int> notVisited;
+    // std::list<int> notVisited;
 };
 
 // custom compare
