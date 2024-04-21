@@ -5,6 +5,7 @@
 #ifndef PEA_ZAD1_BRANCHBOUNDNODE_H
 #define PEA_ZAD1_BRANCHBOUNDNODE_H
 
+#include <list>
 #include <vector>
 #include <queue>
 
@@ -12,6 +13,7 @@
 struct Node {
     int lowerBound;
     std::vector<int> path;
+    std::list<int> notVisited;
 };
 
 // custom compare
